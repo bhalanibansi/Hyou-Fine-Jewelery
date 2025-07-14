@@ -1,0 +1,455 @@
+<style>  
+  .desktop-img{
+    width: 100%;
+    height: 100%;
+  }
+  .desktop_about_us{
+    width: 100%;
+    height: 100%;
+    max-width: calc(100% - 1px);
+    max-height: calc(100% - 18vh)
+  }
+  .mobile_about_us{
+    margin: 0 auto;
+    width: 100%;
+    max-width: max-content;
+  }
+  .mobile_about_us img{
+    width: 100%;    
+  }
+  .new-about-us-page .about-us-static-slide {
+    position:relative;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    align-items: center;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #000;
+    background-color: #333;
+    margin-bottom: 0;
+    margin-top:0;
+  }
+  .new-about-us-page .about-us-static-slide .mobile-img {
+    display: none;
+  }
+  .banner_content h2{
+    font-size: 34px;
+  }
+ .block-id-slide_fDHYF7 .banner_content p{  
+ 
+    line-height: 30px;
+  }
+  .new-about-us-page .about-us-static-list {
+  margin: 0;
+  padding: 0;
+}
+
+.new-about-us-page .about-us-static-slide {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.desktop_about_us,
+.mobile_about_us {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.desktop-img,
+.mobile-img {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+@media screen and (max-width: 767px) {
+    .banner_content p {
+      font-size: 14px;
+    }
+    .desktop_about_us{
+      display: none;
+    }
+    .new-about-us-page .about-us-static-slide .desktop-img {
+      display: none;
+    }
+    .new-about-us-page .about-us-static-slide .mobile-img {
+      display: block;
+    }    
+} 
+@media screen and (min-width: 768px) {  
+  .block-id-slide_fDHYF7 .banner_content p{
+            line-height: 42px;
+  }
+  {% for block in section.blocks %}
+    .block-id-{{ block.id }} .banner_content p{
+      font-size: {{ block.settings.desktop_fontsize }}px;
+    }
+  .block-id-{{ block.id }} .desktop-img{
+    object-fit: {{ block.settings.desktop_object_fit }};
+  }
+    .block-id-{{ block.id }} .banner_content {
+      position: {{ block.settings.desktop_content_position }};
+      left: {{ block.settings.left_side_setup }};
+      right: {{ block.settings.right_side_setup }};
+      top: {{ block.settings.top_side_setup }};
+      bottom: {{ block.settings.bottom_side_setup }};
+      color: {{ block.settings.desk_text_color }};
+      z-index: 2;
+      padding: {{ block.settings.content_padding }};
+    }
+    {% endfor %}
+ }
+@media screen and (max-width: 767px) {       
+    {% for block in section.blocks %}
+       .block-id-{{ block.id }} .banner_content {
+        padding: {{ block.settings.mobile_content_padding }};
+      }
+      .block-id-{{ block.id }} .banner_content p{
+        font-size: {{ block.settings.mobile_fontsize }}px;
+      }
+       .block-id-{{ block.id }} .banner_content {
+          color: {{ block.settings.mob_text_color }};
+       }
+      .block-id-{{ block.id }} .mobile-img {
+        object-fit: {{ block.settings.mobile_object_fit | default: 'cover' }};
+        width: {{ block.settings.mobile_image_width | default: 100 }}%;
+        height: auto;
+      }
+      .block-id-{{ block.id }} .mobile_about_us{
+        width: {{ block.settings.mobile_main_div | default: 100 }}%;
+        max-width: {{ block.settings.mobile_image_max_width }};
+      }
+      .block-id-{{ block.id }}.about-us-slider{
+        padding-top: {{ block.settings.padding_top | default: 0 }}px;
+        padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
+        padding-left: {{ block.settings.padding_left | default: 0 }}px;
+        padding-right: {{ block.settings.padding_right | default: 0 }}px;
+      }
+    {% endfor %}
+  }
+</style>
+<div class="new-about-us-page">
+  <div class="about-us-static-list">
+    {% for block in section.blocks %}
+      <div class="about-us-static-slide block-id-{{ block.id }} about-us-slider" style="background-color: {{ block.settings.background_color }};">
+        {% if block.settings.desktop_image %}
+          <div class="desktop_about_us">
+            <img 
+              src="{{ block.settings.desktop_image | image_url: width: 1000 }}" 
+              alt="Desktop Slide Image" 
+              class="desktop-img"
+            >
+          </div>
+        {% endif %}
+        {% if block.settings.mobile_image %}
+          <div class="mobile_about_us">
+            <img 
+              src="{{ block.settings.mobile_image | image_url: width: 600 }}" 
+              alt="Mobile Slide Image" 
+              class="mobile-img"
+            >
+          </div>
+        {% endif %}
+        <div class="banner_content">
+          {% if block.settings.heading %}
+            <h2>{{ block.settings.heading }}</h2>
+          {% endif %}
+          {% if block.settings.description %}
+            <p>{{ block.settings.description }}</p>
+          {% endif %}
+          {% if block.settings.custom_code %}
+            <div>{{ block.settings.custom_code }}</div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Vertical Swiper Slider",
+  "tag": "section",
+  "class": "new-about-us-page",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [       
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Slide Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#333333"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Slide Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Slide description goes here."
+        },
+        {
+          "type": "header",
+          "content": "Desktop settings"
+        },
+         {
+          "type": "color",
+          "id": "desk_text_color",
+          "label": "Desktop Text Color",
+          "default": "#333333"
+        },
+         {
+          "type": "select",
+          "id": "desktop_content_position",
+          "label": "Desktop Content Position",
+          "default": "block",
+          "options": [
+            {
+              "label": "Relative",
+              "value": "relative"
+            },
+            {
+              "label": "Absolute",
+              "value": "absolute"
+            },
+            {
+              "label": "Block",
+              "value": "block"
+            },
+            {
+              "label": "Unset",
+              "value": "unset"
+            }
+          ]
+        }, 
+        {
+          "type": "textarea",
+          "id": "left_side_setup",
+          "label": "Left Side Setup"
+        },
+        {
+          "type": "textarea",
+          "id": "right_side_setup",
+          "label": "Right Side Setup"
+        },
+         {
+          "type": "textarea",
+          "id": "top_side_setup",
+          "label": "Top Side Setup"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_side_setup",
+          "label": "Bottom Side Setup"
+        },
+        {
+          "type": "textarea",
+          "id": "content_padding",
+          "label": "Desktop Content Padding"
+        },
+        {
+  "type": "select",
+  "id": "desktop_object_fit",
+  "label": "Desktop Image Object-Fit",
+  "default": "cover",
+  "options": [
+    {
+      "label": "Cover",
+      "value": "cover"
+    },
+    {
+      "label": "Contain",
+      "value": "contain"
+    },
+    {
+      "label": "Fill",
+      "value": "fill"
+    },
+    {
+      "label": "None",
+      "value": "none"
+    },
+    {
+      "label": "Scale Down",
+      "value": "scale-down"
+    }
+  ]
+},
+        {
+          "type": "range",
+          "id": "desktop_fontsize",
+          "label": "Desktop Text Size",
+          "default": 14,
+          "min": 5,
+          "max": 50,
+          "step": 1
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+         {
+          "type": "textarea",
+          "id": "mobile_content_padding",
+          "label": "Mobile Content Padding"
+        },
+         {
+          "type": "range",
+          "id": "mobile_fontsize",
+          "label": "Mobile Text Size",
+          "default": 14,
+          "min": 5,
+          "max": 50,
+          "step": 1
+        },
+        {
+          "type": "color",
+          "id": "mob_text_color",
+          "label": "Mobile Text Color",
+          "default": "#333333"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "label": "Top Padding (px)",
+          "min": 0,
+          "max": 200,
+          "step": 4,
+          "default": 40
+        },
+{
+  "type": "range",
+  "id": "padding_bottom",
+  "label": "Bottom Padding (px)",
+  "min": 0,
+  "max": 200,
+  "step": 4,
+  "default": 40
+},
+{
+  "type": "range",
+  "id": "padding_left",
+  "label": "Left Padding (px)",
+  "min": 0,
+  "max": 100,
+  "step": 4,
+  "default": 20
+},
+{
+  "type": "range",
+  "id": "padding_right",
+  "label": "Right Padding (px)",
+  "min": 0,
+  "max": 100,
+  "step": 4,
+  "default": 20
+},
+
+                {
+  "type": "range",
+  "id": "mobile_main_div",
+  "label": "Mobile Main Div Width (%)",
+  "min": 0,
+  "max": 100,
+  "step": 5,
+  "default": 100
+},
+        {
+  "type": "select",
+  "id": "mobile_image_max_width",
+  "label": "Mobile Main Block Image Max-Width",
+  "default": "100%",
+  "options": [
+    { "value": "100%", "label": "100%" },
+    { "value": "75%", "label": "75%" },
+    { "value": "50%", "label": "50%" },
+    { "value": "fit-content", "label": "Fit Content" },
+    { "value": "max-content", "label": "Max Content" },
+    { "value": "min-content", "label": "Min Content" },
+    { "value": "none", "label": "None" }
+  ]
+},
+ {
+  "type": "select",
+  "id": "mobile_object_fit",
+  "label": "Mobile Image Object-Fit",
+  "default": "cover",
+  "options": [
+    {
+      "label": "Cover",
+      "value": "cover"
+    },
+    {
+      "label": "Contain",
+      "value": "contain"
+    },
+    {
+      "label": "Fill",
+      "value": "fill"
+    },
+    {
+      "label": "None",
+      "value": "none"
+    },
+    {
+      "label": "Scale Down",
+      "value": "scale-down"
+    }
+  ]
+},
+        {
+  "type": "range",
+  "id": "mobile_image_width",
+  "label": "Mobile Image Width (%)",
+  "min": 10,
+  "max": 100,
+  "step": 5,
+  "default": 100
+},
+{
+  "type": "range",
+  "id": "mobile_image_height",
+  "label": "Mobile Image Height (vh)",
+  "min": 0,
+  "max": 100,
+  "step": 1,
+  "default": 40
+},
+         {
+      "type": "textarea",
+      "id": "custom_code",
+      "label": "Custom Code (HTML, CSS or JS)",
+      "info": "Add your custom HTML, CSS, or JavaScript here. It will be rendered as-is.",
+      "default": "<style>body { background-color: #f5f5f5; }</style>"
+    }
+        
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Vertical Swiper Slider",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

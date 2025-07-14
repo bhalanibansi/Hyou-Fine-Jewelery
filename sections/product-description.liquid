@@ -1,0 +1,49 @@
+<div class="product__wrapper product__wrapper--grid-1">
+ <ul class="product-details-list">
+        {% assign product_blacklist = block.settings.product_details_blacklist | downcase %}
+        {% for tag in product.tags %}
+          {{ current_tags }}
+          {% if tag contains ':' %}
+            {% assign prop_val = tag | split: ':' %}
+            {% assign property = prop_val[0] | remove:'|' | replace: '-',' ' %}
+            {% assign val = prop_val[1] | remove:'|' %}
+            {% assign property_check = property | handleize %}
+            {% unless val == blank or product_blacklist contains property_check %}
+              <li class="product-details-list__item">
+                {% if property == 'MSRP' %}
+                  <span class="product-details-list__property">{{property}}</span>
+                  <span class="product-details-list__value">{{val}}</span>
+                {% elsif property == 'pMetal' %}
+                  <span class="product-details-list__property">Metal</span>
+                  <span class="product-details-list__value">{{val}}</span>
+                {% elsif property == 'pStone' %}
+                  <span class="product-details-list__property">Stone</span>
+                  <span class="product-details-list__value">{{val}}</span>
+                {% else %}
+                  <span class="product-details-list__property">{{property}}</span>
+                  <span class="product-details-list__value">{{val}}</span>
+                {% endif %}
+              </li>
+            {% endunless %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+  </div>
+{% schema %}
+  {
+    "name": "product-description",
+    "settings": [],
+    "presets": [
+    {
+      "name": "product-details",
+      "category": "Custom"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

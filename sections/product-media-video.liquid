@@ -1,0 +1,63 @@
+
+
+{%- liquid
+assign animation_anchor = '#pdp_video--' | append: section.id
+-%}
+{%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+
+{%- assign has_video = false -%} 
+{%- for media in product.media -%}
+  {%- if media.media_type == 'video' -%}
+    {%- assign has_video = true -%}
+    {%- break -%} 
+  {%- endif -%} 
+{%- endfor -%}
+
+<div class="mob_pdp_videos swiper-container" id="pdp_video--{{ section.id }}">
+  {%- if section.settings.pdp_video_title != blank and has_video -%}
+    <h2 class="product__wrapper" data-aos-anchor="{{ animation_anchor }}"
+    data-aos="hero"
+    data-aos-order="1">{{ section.settings.pdp_video_title }}</h2>
+  {%- endif -%}
+  <div class="swiper-wrapper">
+    {%- for media in product.media -%}
+      {%- if media.media_type == 'video' -%}
+        <div class="swiper-slide">
+          <div class="mobile-product-video product__wrapper" data-aos-anchor="{{ animation_anchor }}"
+    data-aos="hero"
+    data-aos-order="1">
+             {{ media | media_tag: autoplay: true, controls: true, loop: true }}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div> 
+  <div class="swiper-pagination swiper-pagination-progressbar pdp-mob-progressbar"></div> 
+</div>
+
+<noscript>
+  {%- if featured_media.media_type == 'video' -%}
+    {%- capture product_image_size %}{{ height }}x{% endcapture -%}
+    <img src="{{ featured_media | img_url: product_image_size, scale: product_image_scale }}" alt="{{ featured_media.alt }}" id="FeaturedMedia-{{ section.id }}" class="product-featured-media" style="max-width: {{ height }}px;">
+  {%- endif -%}
+</noscript>
+
+
+
+{% schema %}
+  {
+    "name": "Product Media Video",
+    "settings": [
+      {
+        "type": "text",
+        "id": "pdp_video_title",
+        "label": "Title"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product media video"
+      }      
+    ]
+  }
+{% endschema %}

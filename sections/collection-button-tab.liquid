@@ -1,0 +1,149 @@
+<style>
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top_mob }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mob }}px;
+    }
+   @media screen and (min-width:750px) {
+       .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+  }
+</style>
+<section class="landing_collection_btn section-{{ section.id }}-padding">
+  <div class="wrapper--full-padded">
+    <div class="highlight-reel-header button_block">
+       <h2>{{ section.settings.heading }}</h2>
+       <p>{{ section.settings.sub-text }}</p>
+     </div>
+    <div class="main_cst_reel home_coll_button">    
+        <div class="button_main_mockup">
+           {% for block in section.blocks %}
+              <div class="collection_button_main">
+                <a href="{{ block.settings.link }}" class="reel_inner btn {{ block.settings.button_style }} {{ block.settings.button_type }}">
+                  {{ block.settings.linktext }}
+                </a>
+             </div>
+          {% endfor %}
+        </div>  
+      </div>
+   </div>
+ </section> 
+
+{% schema %}
+{
+  "name": "Collection Button",
+  "settings": [
+    {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "sub-text",
+        "label": "Details"
+      },
+    {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 36
+      }, {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 36
+      }, {
+        "type": "range",
+        "id": "padding_top_mob",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding top Mobile",
+        "default": 20
+      }, {
+        "type": "range",
+        "id": "padding_bottom_mob",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding bottom Mobile",
+        "default": 20
+      }
+  ],
+  "blocks": [
+     {
+        "name": "Choose product",
+        "type": "Product",
+        "settings": [          
+          {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click Here"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_type",
+          "label": "Color",
+          "default": "btn--primary",
+          "options": [
+            {"value": "btn--primary", "label": "Primary"},
+            {"value": "btn--secondary", "label": "Secondary"},
+            {"value": "btn--white", "label": "White"},
+            {"value": "btn--black", "label": "Black"},
+            {"value": "btn--blackborder", "label": "blackborder"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Size",
+          "default": "",
+          "options": [
+            { "label": "Small", "value": "btn--small" },
+            { "label": "Medium", "value": "" },
+            { "label": "Large", "value": "btn--large" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Style",
+          "default": "btn--solid",
+          "options": [
+            { "label": "Solid", "value": "btn--solid" },
+            { "label": "Outline", "value": "btn--outline" },
+            { "label": "Text", "value": "btn--text" }
+          ]
+        }
+      ]
+    }   
+  ],
+  "presets": [
+    {
+      "name": "Collection Button"
+    }
+  ]  
+}
+{% endschema %}

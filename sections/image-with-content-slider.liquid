@@ -1,0 +1,338 @@
+<style>
+  .horizontal_slider_main--{{ section.id }}{
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  }
+  .swiper-container.horizontal_slider_main--{{ section.id }} {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+.horizontal_slider_main--{{ section.id }} .content_slider .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.horizontal_slider_main--{{ section.id }} .swiper-pagination {
+  height: 4px;
+  background: #ccc;
+  position: unset;
+  margin-top: 10px;
+}
+.horizontal_slider_main--{{ section.id }} .swiper-pagination .swiper-pagination-progressbar-fill {
+  background: #000;
+  transition: width 0.2s ease;
+}
+.horizontal_slider_main--{{ section.id }} h2{
+  font-size: {{ section.settings.heading_size }}px;
+  padding-bottom: {{ section.settings.heading_padding_bottom }}px;
+  padding-top: {{ section.settings.heading_padding_top }}px;
+  text-align: {{ section.settings.text_alignment }};
+}
+.content_slider .swiper-slide h3.heading-{{ section.id }}{
+  font-size: {{ section.settings.heading_text_size }}px;
+  padding-top: {{ section.settings.block_heading_padding_top }}px;
+  padding-bottom: {{ section.settings.block_heading_padding_bottom }}px;
+}
+.content_header-{{ section.id }}{
+ font-size: {{ section.settings.heading_header_size }}px;
+  padding-top: {{ section.settings.heading_header_padding_top }}px;
+  padding-bottom: {{ section.settings.heading_header_padding_bottom }}px;
+}
+.content-{{ section.id }}{
+ font-size: {{ section.settings.content_size }}px;
+  padding-top: {{ section.settings.content_padding_top }}px;
+  padding-bottom: {{ section.settings.content_padding_bottom }}px;
+}
+.horizontal_slider_main--{{ section.id }} .content_slider .swiper-slide{
+  background: {{ section.settings.block_color }};
+  border-radius: 3px;
+  padding-right:{{ section.settings.block_padding_right }}px;
+  padding-left:{{ section.settings.block_padding_left }}px;
+  padding-top:{{ section.settings.block_padding_top }}px;
+  padding-bottom:{{ section.settings.block_padding_bottom }}px;
+}
+img.map_banner {
+  width: 100%;
+}
+.swiper-slide.main_card_content {
+  height: auto;
+}
+</style>
+
+<div class="swiper-container wrapper horizontal_slider_main--{{ section.id }}">
+  {% if section.settings.section_heading != blank %}
+    <h2>{{ section.settings.section_heading }}</h2>
+  {% endif %}
+  <!-- Wrapper for slides -->
+  <div class="swiper-wrapper content_slider">
+    {% for block in section.blocks %}
+      <div class="swiper-slide main_card_content">
+        {% if block.settings.heading_text != blank %}        
+          <h3 class="heading-{{ section.id }}">{{ block.settings.heading_text }}</h3>
+        {% endif %}
+        {% if block.settings.map_image != blank %}
+          <img src="{{ block.settings.map_image | img_url: 'master' }}" class="map_banner" alt="map image" />
+        {% endif %}
+        {% if block.settings.content_header != blank %}
+          <h6 class="content_header-{{ section.id }}">{{ block.settings.content_header }}</h6>
+        {% endif %}
+        {% if block.settings.content != blank %}
+          <p class="content-{{ section.id }}">{{ block.settings.content }}</p>
+        {% endif %}         
+      </div>
+      
+    {% endfor %}
+  </div>
+  <!-- Add Progress Bar -->
+  <div class="swiper-pagination"></div>
+</div>
+
+<script>
+  var swiper = new Swiper('.horizontal_slider_main--{{ section.id }}', {
+    slidesPerView: 3,
+    spaceBetween: 10,
+    breakpoints: {
+    // when window width is >= 480px
+    320: {
+      slidesPerView: 1,  // Show 2 slides on screens 480px or larger      
+    },
+    // when window width is >= 768px
+    768: {
+      slidesPerView:2,  // Show 3 slides on screens 768px or larger      
+    },
+    // when window width is >= 1024px
+    1024: {
+      slidesPerView: 3,  // Show 4 slides on screens 1024px or larger
+    }
+  },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'progressbar',
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Image With Content Slider",
+    "settings": [
+      {
+        "type": "range",
+        "id": "section_padding_top",
+        "label": "Section Top Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "section_padding_bottom",
+        "label": "Section Bottom Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "block_padding_top",
+        "label": "Block Top Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "block_padding_bottom",
+        "label": "Block Bottom Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "block_padding_left",
+        "label": "Block Left Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "block_padding_right",
+        "label": "Block Right Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+       {
+        "type": "text",
+        "id": "section_heading",
+        "label": "Section Heading",
+        "default": "Slider Heading"
+      },
+      {
+        "type": "range",
+        "id": "heading_size",
+        "label": "Main Heading Size",
+        "min": 1,
+        "max": 50,
+        "default": 20,
+      },
+      {
+        "type": "range",
+        "id": "heading_padding_top",
+        "label": "Main Heading Top Padding",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "heading_padding_bottom",
+        "label": "Main Heading Top bottom",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text Alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "heading_text_size",
+        "label": "Block Heading Size",
+        "min": 1,
+        "max": 50,
+        "default": 20,
+      },
+       {
+        "type": "range",
+        "id": "block_heading_padding_top",
+        "label": "Block Heading Padding Top",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "block_heading_padding_bottom",
+        "label": "Block Heading Padding Bottom",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "heading_header_size",
+        "label": "Block Sub Heading Size",
+        "min": 1,
+        "max": 50,
+        "default": 20,
+      },
+       {
+        "type": "range",
+        "id": "heading_header_padding_top",
+        "label": "Block Sub Heading Padding Top",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "heading_header_padding_bottom",
+        "label": "Block Sub Heading Padding Bottom",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "content_size",
+        "label": "Content Size",
+        "min": 1,
+        "max": 50,
+        "default": 20,
+       },
+       {
+        "type": "range",
+        "id": "content_padding_top",
+        "label": "Content Padding Top",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "range",
+        "id": "content_padding_bottom",
+        "label": "Content Padding Bottom",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+      },
+      {
+        "type": "color",
+        "id": "block_color",
+        "label": "Block Color"
+      }
+    ],
+      "blocks": [
+      {
+        "type": "slide",
+        "name": "Slide",
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading_text",
+            "label": "Heading Text"
+          },
+          
+          {
+            "type": "image_picker",
+            "id": "map_image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "content_header",
+            "label": "Content Header"
+          },          
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Content"
+          }          
+        ]
+      }
+      ],
+    "presets": [
+      {
+        "name": "Image With Content Slider"
+      }
+    ]
+  }
+{% endschema %}

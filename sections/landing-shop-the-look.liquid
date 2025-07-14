@@ -1,0 +1,97 @@
+{{ 'landing-page.css' | asset_url | stylesheet_tag }} 
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/css/swiper.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+
+<div class="landing_block product__wrapper">
+  <div class="wrapper--full-padded">
+    <h2>{{ section.settings.pro-title }}</h2>
+  </div> 
+  <div class="swiper landing_block_slider">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        {% assign product-image = all_products[block.settings.product-image] %}
+        {% assign block_first_variant3 = product-image.selected_or_first_available_variant %}
+        {% assign featured_img_src3 = block_first_variant3.featured_img.src | default: product-image.featured_image.src %}
+        <div class="swiper-slide">  
+          {% if block.settings.product-image != blank %}
+            <a href="{{ product-image.url }}">
+              {% if forloop.first %}
+                {% if block.settings.custom-img2 != blank %}
+                  <img class="" src="{{ block.settings.custom-img2 | img_url: 'master' }}" alt="{{ block.settings.custom-img2.alt }}" />
+                {% else %}
+                  <img class="" src="{{ featured_img_src3 | img_url: '' }}" alt="{{ product.featured_img3.alt }}" />
+                {% endif %}
+              {% else %}
+                <img class="" src="{{ featured_img_src3 | img_url: '' }}" alt="{{ product.featured_img3.alt }}" />
+                <div class="product-image-content">
+                  <h6>{{ product-image.title }}</h6>   
+                  <p>{{ product-image.variants.first.price | money_without_trailing_zeros }}</p>  
+                </div>
+              {% endif %}   
+              <!-- <h6>{{ product-image.title }}</h6> -->    
+              <h5 class="product_id">{{ block_first_variant3.id }}</h5> 
+            </a>             
+          {% elsif block.settings.video != blank %}
+            <div class="video-container">
+              <video autoplay muted loop playsinline data-wow-offset="60" data-duration=".5s">
+                <source src="{{ block.settings.video }}" type="video/mp4">                 
+              </video>
+            </div>
+          {% endif %}           
+        </div>         
+      {% endfor %}      
+    </div>
+    <div class="swiper-pagination"></div>     
+  </div>                                                                                                                                        
+</div>
+
+{% schema %}
+{
+  "name": "Landing Shop The Look",
+  "settings": [    
+    {
+        "type": "text",
+        "id": "pro-title",
+        "label": "Product Title"
+      }
+  ],
+  "blocks": [
+    {
+        "name": "Choose product",
+        "type": "Product",
+        "settings": [      
+          {
+              "type": "product",
+              "id": "product-image",
+              "label": "Product Image"
+            },
+            {
+                "type": "image_picker",
+                "id": "custom-img2",
+                "label": "Custom Image"
+              },
+            {
+                "type": "url",
+                "id": "url",
+                "label": "Image Url"
+              },
+            {
+              "type": "text",
+              "id": "video",
+              "label": "Video"
+            }
+        ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Landing Shop The Look"
+    }
+  ]  
+}
+{% endschema %}

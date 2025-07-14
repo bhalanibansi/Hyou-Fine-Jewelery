@@ -1,0 +1,104 @@
+{% comment %}
+{% liquid
+assign animation_anchor = '#hot-right-now--' | append: section.id
+%}
+{% if product.metafields.custom.shop_look_product %}    
+<section class="product__wrapper cust_wrapper--full-padded hot-right-now shop-look-section" id="hot-right-now--{{ section.id }}"> 
+  <h2 data-aos-anchor="{{ animation_anchor }}"
+    data-aos="hero"
+    data-aos-order="1">{{ section.settings.heading }}</h2>
+  <div class="hot-right-now product-grid" data-aos-anchor="{{ animation_anchor }}"
+    data-aos="hero"
+    data-aos-order="1">
+ {%- assign array_of_image_objects = product.metafields.custom.shop_look_product | split: ',' -%}
+    {%- paginate collections.all.products by 800 -%}
+    {%- for product in collections.all.products -%}
+      {%- assign current_variant = product.variants -%}
+      {%- for variant in current_variant -%}
+        {%- assign product_sku = variant.sku -%}
+        {%- for image_object_sku in array_of_image_objects -%}
+          {%- if product_sku == image_object_sku -%}
+            {%- assign first_image = product.images.first -%}
+            {%- if first_image -%}
+            <div data-sku="{{ forloop.index }}" class="grid__item small--one-half medium-up--one-quarter">              
+              <div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card">
+                <a href="{{ product.url }}" class="product-images-curv">
+                  {% render 'image-hero', image: first_image, widths: '200,400,800', sizes: '(max-width: 768px) 100vw, 400px', alt: product.title, loading: 'lazy', class: 'custom-class' %}           
+                </a>
+              </div>
+            </div>
+            {%- else -%}           
+            <p>Product {{ product.title }} has no images.</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endfor -%}
+    {%- endpaginate -%}
+  </div>
+</section>  
+{% endif %}
+{% endcomment %}
+ 
+{% liquid
+assign animation_anchor = '#hot-right-now--' | append: section.id
+assign sku_list = product.metafields.custom.shop_look_product | split: ',' | uniq
+assign matched_products = '' %}
+{%- if sku_list != blank -%}
+  <section class="product__wrapper cust_wrapper--full-padded hot-right-now shop-look-section" id="hot-right-now--{{ section.id }}">
+    <h2 data-aos-anchor="{{ animation_anchor }}"
+        data-aos="hero"
+        data-aos-order="1">{{ section.settings.heading }}</h2>
+    <div class="hot-right-now product-grid"
+         data-aos-anchor="{{ animation_anchor }}"
+         data-aos="hero"
+         data-aos-order="1">
+
+      {%- paginate collections.all.products by 800 -%}
+        {%- for product in collections.all.products -%}
+          {%- assign found = false -%}
+          {%- for variant in product.variants -%}
+            {%- if sku_list contains variant.sku -%}
+              {%- assign found = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if found and product.images.first -%}
+            <div data-sku="{{ forloop.index }}" class="grid__item small--one-half medium-up--one-quarter">
+              <div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card">
+                <a href="{{ product.url }}" class="product-images-curv">
+                  {%- render 'image-hero',
+                    image: product.images.first,
+                    widths: '200,400,800',
+                    sizes: '(max-width: 768px) 100vw, 400px',
+                    alt: product.title,
+                    loading: 'lazy',
+                    class: 'custom-class' -%}
+                </a>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endpaginate -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Hot Right Now",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      }
+    ],     
+    "presets": [
+      {
+        "name": "Hot Right Now"
+      }
+    ]
+  }
+{% endschema %}

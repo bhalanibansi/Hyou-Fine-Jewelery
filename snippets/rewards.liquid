@@ -1,0 +1,35 @@
+
+{% assign holiday_rewards = block.settings.holiday_rewards %}
+{% assign holiday_rewards_title = block.settings.holiday_rewards_title %}
+
+<div class="holiday_reward">
+  {%- if product.metafields.custom.holiday_rewards -%}
+    {%- if customer -%}
+       <p>Use Code: <b>CLUBHYOU</b> for 20% OFF. Exclusively for you.</p>
+      {%- else -%}
+      <p><b>{{ holiday_rewards_title }} </b><span>{{ product.metafields.custom.holiday_rewards }}</span></p>
+    {%- endif -%}
+  {%- else -%}
+    <p><b>{{ holiday_rewards_title }} </b><span>{{ holiday_rewards }}</span></p>
+  {%- endif -%}
+    <div class="payment-icon">
+    <div class="pay_block">
+     <img src="https://cdn.shopify.com/s/files/1/0838/6628/8436/files/pay.png?v=1730288157" alt="pay" aria-label="pay">
+      <span>Shop Now, Pay in 4</span>
+    </div>
+    <div class="return_block">      
+       <img src="https://cdn.shopify.com/s/files/1/0838/6628/8436/files/shield.png?v=1730288157" alt="return" aria-label="return"/>
+      <span>30 Day Returns</span>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<button class="klaviyo_form_triggers unlock_button">Want 20% Off? Join The Club  
+</button>     
+<script type="text/javascript">
+  document.querySelector('.klaviyo_form_triggers').addEventListener('click', function (){
+      window._klOnsite = window._klOnsite || [];
+      window._klOnsite.push(['openForm', 'VKJpTB']);
+  });
+</script>{% endcomment %}

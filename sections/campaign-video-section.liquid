@@ -1,0 +1,120 @@
+<div class="custom-stories">
+  {% for block in section.blocks %}
+    <div class="story-block" style="margin-bottom: 50px; text-align: center;">
+      {% if block.settings.desktop_image != blank or block.settings.mobile_image != blank %}
+        <div class="story-image" style="position: relative;">
+        {% if block.settings.video_link != blank %}
+          <a href="{{ block.settings.video_link }}">
+          {% if block.settings.desktop_image %}
+            <img src="{{ block.settings.desktop_image | img_url: '720x' }}" alt="{{ block.settings.heading }}" class="desktop-img" style="width: 100%; margin: 0 auto; display: block;">
+          {% endif %}
+          {% if block.settings.mobile_image %}
+            <img src="{{ block.settings.mobile_image | img_url: '720x' }}" alt="{{ block.settings.heading }}" class="mobile-img" style="width: 100%; margin: 0 auto; display: none;">
+          {% endif %}</a>
+          {% endif %}
+          <!-- {% if block.settings.video_link != blank %}
+            <a href="{{ block.settings.video_link }}" target="_blank" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;">
+              <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play Button" style="width: 50px; height: 50px;">
+            </a>
+          {% endif %} -->
+        </div>
+      {% endif %}
+
+      <h2 style="margin-top: 32px; color: #cb6d8d;">{{ block.settings.heading }}</h2>
+
+      <div class="story-description" style="max-width: 500px; margin: 0 auto 20px;">
+        {{ block.settings.description }}
+      </div>
+
+      {% if block.settings.button_link != blank %}
+        <a href="{{ block.settings.button_link }}" class="btn" style="background: black; color: white; padding: 10px 20px; text-decoration: none;">{{ block.settings.button_text }}</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+<style>  
+  @media (max-width: 767px) {
+    .custom-stories .desktop-img {
+      display: none !important;
+    }
+    .custom-stories .mobile-img {
+      display: block !important;
+    }
+    .story-description p{
+        padding: 0px 32px;
+  }
+  }
+  @media (min-width: 768px) {
+    .custom-stories .mobile-img {
+      display: none !important;
+    }
+    .custom-stories .desktop-img {
+      display: block !important;
+    }
+  }
+  .custom-stories .btn:hover {
+    background: #444;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Campaign Video Page",
+    "settings": [
+      
+    ],
+   "blocks": [
+    {
+      "type": "story",
+      "name": "Story Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": "Video Link"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Your Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Your description here.</p>"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "DISCOVER THE STORY"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+     "presets": [
+      {
+        "name": "campaign Video page"
+      }
+    ]
+  }
+{% endschema %}

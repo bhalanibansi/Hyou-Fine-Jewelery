@@ -1,0 +1,201 @@
+<style>
+.accordion-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menu-heading a {
+  text-decoration: none;
+  font-family: MinervaModern;
+  font-size: 14px;  
+  flex-grow: 1;
+}
+
+.submenu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;  
+}
+
+.submenu-toggle .cst-icon2 {
+  bottom: -11px;
+}
+
+.menu-item.active .menu-heading .submenu-toggle .icon-minus {
+  display: none;
+}
+
+.menu-item.active .menu-heading .submenu-toggle .cst-icon2.icon-plus {
+  display: block;
+  transform: rotate(90deg);
+}  
+
+.menu-item .menu-heading .submenu-toggle .icon-minus {
+  display: none;
+}
+
+.menu-item {
+  border-bottom: 1px solid #ddd;
+  text-transform: uppercase;
+}
+
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.submenu li {
+  padding: 3px;
+  font-family: MinervaModern;
+  font-size: 14px;
+}
+
+/* Updated submenu link styling */
+.submenu li a {
+  text-decoration: none;
+  color: #555;
+  display: block; /* Full line clickable */
+  padding: 10px; /* Adjust padding for a larger clickable area */
+  width: 100%; /* Ensures the link covers the full line */
+}
+
+.submenu li a:hover {
+  color: #000;
+}
+
+.new-arrivals-grid {
+  display: none;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  grid-template: auto/auto auto;
+}
+
+.submenu .product-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #ddd;
+}
+
+.menu-item.active .new-arrivals-grid {
+  display: grid; 
+}
+
+.submenu-toggle {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.submenu li a svg {
+  display: none;
+}
+  .highlight-link{
+    color:#DB5F6E;
+        text-transform: capitalize;
+    font-weight: bold;
+  }
+</style>
+
+{% if section.settings.tertiary_menu_linklist %}
+  <ul class="accordion-menu">
+    {% for link in linklists[section.settings.tertiary_menu_linklist].links %}
+      <li class="menu-item">
+        <div class="menu-heading">
+          <a href="{{ link.url }}" class="{% if link.title == "#JustBecause Stories" %}highlight-link{% endif %}">{{ link.title }}</a>
+          <div class="submenu-toggle" aria-label="Toggle submenu">
+            <svg class="cst-icon2 icon-plus" xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+              <path d="M1 10L5.5 5.5L1 1" stroke="black" stroke-linecap="square" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Submenu for regular links -->
+        {% if link.links.size > 0 %}
+          <ul class="submenu">
+            {% for sublink in link.links %}
+              <li>
+                <a href="{{ sublink.url }}">
+                  {{ sublink.title }}
+                  <svg class="submenu-arrow-icon" xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none" style="margin-left: auto;">
+                    <path d="M1 10L5.5 5.5L1 1" stroke="black" stroke-linecap="square" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <!-- Special submenu for New Arrivals -->
+        {% if link.title == "New Arrivals" %}
+          <ul class="submenu new-arrivals-grid">
+            {% assign collection = collections['new-arrivals'] %}
+            {% for product in collection.products limit:16 %}
+              <li class="product-item">
+                <a href="{{ product.url }}">
+                                    {{ product.featured_image | image_url: width: 300 | image_tag: alt: product.title, loading: "lazy" }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No menu assigned to the tertiary menu link list setting.</p>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var menuItems = document.querySelectorAll(".menu-item");
+
+  menuItems.forEach(function(item) {
+    var toggleButton = item.querySelector(".submenu-toggle");
+    if (toggleButton) {
+      toggleButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        // Close any open submenus
+        menuItems.forEach(function(otherItem) {
+          if (otherItem !== item) {
+            var otherSubmenu = otherItem.querySelector(".submenu");
+            if (otherSubmenu) {
+              otherSubmenu.style.display = "none";
+              otherItem.classList.remove("active");
+            }
+          }
+        });
+        
+        // Toggle the display of the clicked submenu
+        var submenu = item.querySelector(".submenu");
+        if (submenu) {
+          if (submenu.style.display === "none" || submenu.style.display === "") {
+            submenu.style.display = submenu.classList.contains('new-arrivals-grid') ? 'grid' : 'block';
+            item.classList.add("active");
+          } else {
+            submenu.style.display = "none";
+            item.classList.remove("active");
+          }
+        }
+      });
+    }
+  });
+});
+</script>

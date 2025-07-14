@@ -1,0 +1,7 @@
+{% comment %}{% assign metafield_value = customer.metafields.app--1576377--loyalty.points_balance %}
+
+{% if customer and metafield_value > 0 %}
+  <p style="font-weight: bold;">You have Club HYOU points worth ${{ metafield_value }}</p>
+{% endif %}
+{% endcomment %}
+

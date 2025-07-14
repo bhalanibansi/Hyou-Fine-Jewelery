@@ -1,0 +1,88 @@
+<style>
+  .campaign_desk_video{
+    width: 100%;
+  }
+  .campaign_mob_video{
+    width: 100%;
+  }
+   @media (max-width: 767px) {
+    .campaign_mob_video{
+      display: block;
+    }
+     .campaign_desk_video{
+       display: none;
+     }
+   }
+   @media (min-width: 768px) {
+     .campaign_mob_video{
+       display: none;
+     }
+   }
+</style>
+<div class="hero-video-section relative overflow-hidden w-full">
+  {% if section.settings.video_desktop != blank %}
+    <video
+      class="campaign_desk_video"
+     loop
+      autoplay
+      muted
+      controls
+      playsinline
+    >
+      <source src="{{ section.settings.video_desktop }}" type="video/mp4">
+    </video>
+  {% endif %}
+
+  {% if section.settings.video_mobile != blank %}
+    <video
+      class="campaign_mob_video"
+     loop
+      autoplay
+      muted
+      controls
+      playsinline
+    >
+      <source src="{{ section.settings.video_mobile }}" type="video/mp4">
+    </video>
+  {% endif %}
+
+  {% if section.settings.video_link != blank and section.settings.play_icon != blank %}
+    <a href="{{ section.settings.video_link }}" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+      <img src="{{ section.settings.play_icon | image_url: width: 80 }}" alt="Play Video" class="w-20 h-20">
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Sub Campaign Video",
+  "settings": [
+    {
+      "type": "url",
+      "id": "video_desktop",
+      "label": "Desktop Video URL (.mp4)"
+    },
+    {
+      "type": "url",
+      "id": "video_mobile",
+      "label": "Mobile Video URL (.mp4)"
+    },
+    {
+      "type": "image_picker",
+      "id": "play_icon",
+      "label": "Play Button Icon"
+    },
+    {
+      "type": "url",
+      "id": "video_link",
+      "label": "Link for Play Button (optional)"    
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sub Campaign Video",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,70 @@
+{% liquid
+  assign animation_anchor = '#compare-table--' | append: section.id
+%}
+<section class="product__wrapper compare_tbl mobile_compare_table" id="compare-table--{{ section.id }}">
+  <div class="product__wrapper__inner compare_table_main"
+    data-aos-anchor="{{ animation_anchor }}"
+    data-aos="hero"
+    data-aos-order="1">      
+    {%- if product.tags contains 'Compare Table' -%}
+      <h2>{{ section.settings.heading }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>HYOU<br>Lab-Grown Diamonds<br>14K Gold Vermeil</th>    
+          <th>OTHERS<br>Mined Diamonds<br>14K Solid Gold</th>
+        </tr>
+      </thead>
+   <tbody>
+        <tr>
+          <td data-column="" class="table_title">Price</td>
+          <td data-column="" style="font-size: 18px;">{{ product.metafields.custom.price_hyou }}</td>     
+          <td data-column="" style="font-size: 18px;">{{ product.metafields.custom.price_other }}</td>      
+        </tr>
+        <tr>
+          <td data-column="" class="table_title">Savings</td>
+          <td data-column="" style="font-size: 18px;">{{ product.metafields.custom.savings_hyou }}</td>    
+          <td data-column="">{{ product.metafields.custom.savings_others | replace: '<img ', '<img alt="Saving Others" ' }}</td>    
+        </tr>
+        <tr>
+          <td data-column="" class="table_title">Sustainable<br>Material</td>
+          <td data-column="">{{ product.metafields.custom.material_hyou | replace: '<img ', '<img alt="Material Hyou" ' }}</td>     
+          <td data-column="">{{ product.metafields.custom.material_others | replace: '<img ', '<img alt="Material Others" ' }}</td>    
+        </tr>   
+        <tr>
+          <td data-column="" class="table_title">Diamond<br>Quality</td>
+          <td data-column="">{{ product.metafields.custom.quality_hyou | replace: '<img ', '<img alt="Diamond Quality Hyou" ' }}</td>     
+          <td data-column="">{{ product.metafields.custom.quality_others | replace: '<img ', '<img alt="Diamond Quality Others" ' }}</td>                                  
+        </tr>     
+        <tr>
+          <td data-column="" class="table_title">Water<br>Resistant</td>
+          <td data-column="">{{ product.metafields.custom.water_hyou | replace: '<img ', '<img alt="Water Resistant Hyou" ' }}</td>     
+          <td data-column="">{{ product.metafields.custom.water_other | replace: '<img ', '<img alt="Water Resistant Other" ' }}</td>                                  
+        </tr>
+      </tbody>
+    </table>
+      {% endif %}    
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Compare Table",
+  "settings": [
+  {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      }
+  ],
+  "blocks": [
+   
+  ],
+  "presets": [
+    {
+      "name": "Compare Table"
+    }
+  ]  
+}
+{% endschema %}

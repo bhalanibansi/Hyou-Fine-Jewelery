@@ -1,0 +1,65 @@
+{% if collection.metafields.custom.collections_category != blank %}
+<style>
+  .sub-category{
+    padding:50px 0;
+  }
+  .sub-category-slider .sub-cat-details{
+    text-align:center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  /* .sub-category-slider .sub-cat-details{
+      width:61px;
+    } */
+  .sub-category-slider .sub-cat-details img{
+    width:61px;
+    height:61px;
+    border-radius:50%;
+    margin-bottom:20px;
+  }
+  .sub-category-slider .sub-cat-details p{
+    font-size:14px;
+    color:#747474;
+    text-align: center;
+  }
+  .sub-category-slider .swiper-wrapper{
+    padding-bottom: 20px;
+  }
+  @media screen and (min-width:750px) {
+    .sub-category-slider .sub-cat-details{
+       width:122px;
+    }
+    .sub-category-slider .sub-cat-details img{
+      width:122px;
+      height:122px;
+    }
+    .sub-category-slider .swiper-wrapper{
+      padding-bottom: 30px;
+    }
+  }
+</style>
+{% assign sub-category = collection.metafields.custom.collections_category %}
+<div class="sub-category">
+  <div class="wrapper--full-padded">
+    <div class="swiper sub-category-slider">
+      <div class="swiper-wrapper">
+        {% assign sub-content  = sub-category | split:"||" %}
+        {%- for category in sub-content -%}
+        <div class="swiper-slide">
+          {% assign sub-detail  = category | split:"++" %}
+            <a href="https://shadesofhyou.myshopify.com/collections/{{ sub-detail[0] }}">
+              <div class="sub-cat-details">
+                <img src="https://cdn.shopify.com/s/files/1/0838/6628/8436/files/{{ sub-detail[1] }}" />
+                <p>{{ sub-detail[2] }}</p>
+              </div>
+            </a>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-scrollbar sub-swi-scrollbar"></div>
+    </div>
+  </div>
+</div>
+{% endif %}
+

@@ -1,0 +1,401 @@
+{%- liquid
+  assign cart_products = ''
+  assign upsell_products = ''
+  assign line_items_html = ''
+  assign upsell_items_html = ''
+  assign animation_name = animation_name | default: 'cart-items-fade'
+  assign animation_delay_increment = 50
+  unless animation_delay
+    assign animation_delay = 0
+  endunless
+-%}
+
+{%- comment -%}
+  Capture line items
+{%- endcomment -%}
+
+{%- for line_item in cart.items -%}
+  {%- liquid
+    assign line_item_final_price = line_item.final_price | money
+    assign line_item_variant_compare_at_price = line_item.variant.compare_at_price | money
+    assign line_item_original_price = line_item.original_price | money
+    assign line_item_unit_price = line_item.unit_price | money
+    assign cart_products = cart_products | append: line_item.product.id | append: ','
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+    assign line_item_tags = line_item.product.tags
+    assign formatted_tags = line_item_tags | join: "," 
+    if forloop.index > 5
+      assign fetchpriority = 'auto'
+      assign loading = 'lazy'
+    endif
+
+     assign has_cart_discount = "false" 
+     if formatted_tags contains "Cart Discount" 
+      assign has_cart_discount = "true" 
+    endif 
+  -%}
+
+  {%- capture cart_line_item -%}
+
+    <div class="cart__item{% if forloop.last %} cart__item--no-border{% endif %}"
+      data-discount-tag="{{ has_cart_discount }}"
+      data-item="{{ line_item.key }}"
+      data-item-index="{{ forloop.index }}"
+      data-item-title="{{- line_item.title | strip_html -}}"
+      data-animation="{{ animation_name }}"
+      data-animation-duration="500"
+      data-animation-delay="{{ animation_delay }}"
+      {%- assign animation_delay = animation_delay | plus: animation_delay_increment -%}
+    >
+      <div class="cart__item__image{% unless line_item.image %} image--empty{% endunless %}">
+        <a href="{{ line_item.url }}" aria-label="{{ line_item.title | escape }}">
+          {%- if line_item.image -%}
+            <div class="lazy-image is-loading">
+              {{ line_item.image | image_url: width: 180 | image_tag: widths: '90, 180, 270, 360', sizes: '90px', aspect_ratio: 1, class: 'is-loading', loading: loading, fetchpriority: fetchpriority }}
+            </div>
+          {%- endif -%}
+        </a>
+      </div>
+
+      <div class="cart__item__content">
+        <div class="cart__item__content-inner">
+          <h4 class="cart__item__title">
+            <a href="{{ line_item.url }}">
+              {{- line_item.product.title | strip_html -}}
+            </a>
+          </h4>
+        </div>
+        <input type="hidden" class="cart-variant-id" value="{{ line_item.variant_id }}">
+        <p class="cart__price">
+          {%- liquid
+            assign discounted = false
+            assign sale = false
+
+            if line_item.original_price > line_item.final_price
+              assign discounted = true
+            endif
+
+            if line_item.variant.compare_at_price > line_item.final_price
+              assign sale = true
+            endif
+          -%}
+
+          {%- if sale or discounted -%}
+            <ins>
+              {%- if line_item.final_price == 0 -%}
+                {{ 'general.money.free' | t }}
+              {%- else -%}
+                {{- line_item_final_price -}}
+              {%- endif -%}
+            </ins>
+          {%- else -%}
+            {%- if line_item.final_price == 0 -%}
+              {{ 'general.money.free' | t }}
+            {%- else -%}
+              {{- line_item_final_price -}}
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if sale and discounted == false -%}
+            <del>{{- line_item_variant_compare_at_price -}}</del>
+          {%- endif -%}
+
+          {%- if discounted -%}
+            <del>{{- line_item_original_price -}}</del>
+          {%- endif -%}
+
+          {%- if line_item.unit_price -%}
+            {%- capture unit_price_separator -%}
+              <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+            {%- endcapture -%}
+
+            {%- capture unit_price_base_unit -%}
+              {%- if line_item.unit_price_measurement.reference_value != 1 -%}
+                {{- line_item.unit_price_measurement.reference_value -}}
+              {%- endif -%}
+
+              {{- line_item.unit_price_measurement.reference_unit -}}
+            {%- endcapture -%}
+
+            <span class="line__price">
+              <small class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</small>
+
+              <small>{{ line_item_unit_price }}{{ unit_price_separator }}{{ unit_price_base_unit }}</small>
+            </span>
+          {%- endif -%}
+        </p>
+
+        <!-- Render delivery.liquid snippet -->
+        <div class="custom-cart-drawer">
+        {%- render 'delivery', product: line_item.product -%}
+     {%- assign inventoryQty = line_item.variant.inventory_quantity -%}
+
+        {%- if inventoryQty > 2 -%}
+          <p class="inventoryMessage" style="font-weight: bold;">In Stock</p>        
+        {%- elsif inventoryQty > 0 and inventoryQty < 3 -%}
+          <p class="inventoryMessage" style="font-weight: bold;">Only {{ inventoryQty }} Left</p>
+        {%- elsif inventoryQty <= 0 -%}
+          <p class="inventoryMessage" style="font-weight: bold;">Shipping Later</p>
+        {%- endif -%}
+        </div>
+    
+ 
+        <quantity-counter class="cart__quantity-counter">
+          <div class="cart__quantity">
+            <button
+              class="cart__quantity-minus"
+              type="button"
+              name="decrease"
+              title="{{ 'cart.general.decrease_quantity_label' | t }} - {{ line_item.product.title | strip_html }}">
+              {%- render 'cart-minus' -%}
+            </button>
+
+            {%- assign quantity = line_item.quantity -%}
+
+            {%- if line_item.variant.inventory_policy == 'deny' and line_item.variant.inventory_management != nil and line_item.variant.inventory_quantity < quantity -%}
+              {%- assign quantity = line_item.variant.inventory_quantity -%}
+            {%- endif -%}
+
+            <input
+              class="cart__quantity-field"
+              type="number"
+              id="updates_{{ line_item.key }}"
+              name="updates[]"
+              data-id="{{ line_item.key }}"
+              value="{{ quantity }}"
+              title="{{ 'cart.general.quantity_field_label' | t }} - {{ line_item.product.title | strip_html }}"
+              pattern="[0-9]*">
+
+            <button
+              class="cart__quantity-plus"
+              type="button"
+              name="increase"
+              title="{{ 'cart.general.increase_quantity_label' | t }} - {{ line_item.product.title | strip_html }}">
+              {%- render 'cart-plus' -%}
+            </button>
+          </div>
+
+          <a class="cart__item__remove"
+            href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0"
+            data-item-remove
+            data-id="{{ line_item.key }}"
+            title="{{ 'cart.general.remove' | t }}">
+            {% comment %}  {{- 'cart.general.remove' | t -}} {% endcomment %}
+            {% render 'trace' %}
+          </a>
+        </quantity-counter>
+      </div>
+
+      {%- if line_item.original_price > line_item.final_price -%}
+        {%- for discount in line_item.line_level_discount_allocations -%}
+          <p class="cart__discount">
+            {%- render 'icon-tags' -%}
+
+            {%- assign discount_price = discount.amount | money -%}
+
+            <span>{{ 'cart.general.discount_label' | t: amount: discount_price, title: discount.discount_application.title }}</span>
+          </p>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  {%- endcapture -%}
+
+  {%- assign line_items_html = line_items_html | append: cart_line_item -%}
+{%- endfor -%}
+
+{%- comment -%}
+  Capture upsell items based on products added to Cart
+{%- endcomment -%}
+{%- for line_item in cart.items -%}
+  {%- capture upsell_line_item -%}
+    {%- liquid
+      comment
+        Upsell items
+      endcomment
+      assign upsell_product_single = line_item.product.metafields.theme.upsell
+      assign upsell_product_list = line_item.product.metafields.theme.upsell_list
+
+      comment
+        Product meta field type "One product"
+      endcomment
+      if upsell_product_single.value != nil and upsell_product_single.type == 'product_reference'
+        assign upsell_product = upsell_product_single.value
+
+        unless upsell_products contains upsell_product.handle or cart_products contains upsell_product.id or upsell_product.available == false
+          render 'upsell-product' upsell_product: upsell_product, is_cart: true
+          assign upsell_products = upsell_products | append: upsell_product.handle | append: ','
+        endunless
+      endif
+
+      comment
+        Product meta field type "List of products"
+      endcomment
+      if upsell_product_list.value != nil and upsell_product_list.type == 'list.product_reference'
+        for upsell_product in upsell_product_list.value
+          unless upsell_products contains upsell_product.handle or cart_products contains upsell_product.id or upsell_product.available == false
+            render 'upsell-product' upsell_product: upsell_product, is_cart: true
+            assign upsell_products = upsell_products | append: upsell_product.handle | append: ','
+          endunless
+        endfor
+      endif
+    -%}
+  {%- endcapture -%}
+
+  {%- assign upsell_items_html = upsell_items_html | append: upsell_line_item -%}
+{%- endfor -%}
+
+{%- case part -%}
+  {%- when 'line-items' -%}
+    {{- line_items_html -}}
+
+  {%- when 'upsell-items' -%}
+    {{- upsell_items_html -}}
+
+{%- endcase -%}
+<style>
+  .custom-cart-drawer .inventory_with_icon {
+    display: none;
+}
+.custom-cart-drawer {
+    display: flex;
+    flex-direction: column-reverse;
+}
+ .custom-cart-drawer #shipping-date div p {
+    font-size: 15px;
+    margin: 10px 0;
+}
+ .custom-cart-drawer .pro-del-date b{
+    font-weight:normal;
+  }
+</style>
+<!-- <script>
+   document.addEventListener("DOMContentLoaded", function () {
+   
+         function updateDeliveryDate() {
+            let today = new Date();      
+            let options = { month: 'long', day: '2-digit' };
+
+            document.querySelectorAll('.cart-item-with-metafiled').forEach(function (item) {
+                let inventoryQuantity = parseInt(item.getAttribute('data-inventory'), 10);
+                let metafieldValue = item.getAttribute('data-metafields');
+                let tags = item.getAttribute('data-tags'); // Assuming tags are available as a data attribute
+                
+                try {
+                    parsedMetafields = JSON.parse(metafieldValue);
+                } catch (error) {
+                    console.error('Error parsing metafield value:', error);
+                    return;
+                }
+                
+                // Initialize deliveryDate to current date
+                let deliveryDate = new Date();  // Current date for deliveryDate
+             
+                // Helper function to skip weekends (Saturday and Sunday)
+                function addBusinessDays(date, days) {
+                    let count = 0;
+                    while (count < days - 1) {
+                        date.setDate(date.getDate() + 1);
+                        // If it's Saturday (6) or Sunday (0), don't count it as a business day
+                        if (date.getDay() !== 0 && date.getDay() !== 6) {
+                            count++;
+                        }
+                    }
+                    return date;
+                };              
+
+                // Check if delivery date is already set
+                let deliveryElement = item.querySelector('.delivery-date');
+                if (deliveryElement && deliveryElement.getAttribute('data-delivery-set') === "true") {
+                    return; // Skip recalculation if delivery date is already set
+                }
+
+                // New condition for "Midamas" tag
+                if (inventoryQuantity <= 0 && (!metafieldValue || metafieldValue.length === 2) && tags && tags.includes("Midamas")) {
+                    addBusinessDays(deliveryDate, 35); // Add 35 working days
+                    let formattedDate = deliveryDate.toLocaleDateString('en-US', options);
+                    if (deliveryElement) {
+                        deliveryElement.innerHTML = `<b>Delivery:</b> ${formattedDate}`;
+                        deliveryElement.setAttribute('data-delivery-set', "true"); // Mark delivery date as set
+                    }
+                } else if (inventoryQuantity <= 0 && (!metafieldValue || metafieldValue.length === 2)) {
+                    addBusinessDays(deliveryDate, 18);
+                    let formattedDate = deliveryDate.toLocaleDateString('en-US', options);
+                    if (deliveryElement) {
+                        deliveryElement.innerHTML = `<b>Delivery:</b> ${formattedDate}`;
+                        deliveryElement.setAttribute('data-delivery-set', "true"); // Mark delivery date as set
+                    }
+                } else if (inventoryQuantity > 0) {
+                    let now = new Date(); 
+                    let currentHour = now.getHours();                
+                    if (currentHour < 16) {
+                        addBusinessDays(deliveryDate, 3);                      
+                    } else {
+                        addBusinessDays(deliveryDate, 4);                       
+                    }                
+                    let formattedDate = deliveryDate.toLocaleDateString('en-US', options);                
+                    if (deliveryElement) {
+                        deliveryElement.innerHTML = `<b>Delivery:</b> ${formattedDate}`;
+                        deliveryElement.setAttribute('data-delivery-set', "true"); // Mark delivery date as set
+                    }
+                } else if (inventoryQuantity <= 0 && metafieldValue) {
+                    try {
+                        let metafieldQuantities = {
+                            shipment_1: 0,
+                            shipment_2: 0,
+                            shipment_3: 0,
+                            shipment_4: 0,
+                            shipment_5: 0,
+                        };
+                        
+                        parsedMetafields.forEach((metafield, index) => {
+                            let [quantity, date] = metafield.value.split('|');                      
+                            let quantityKey = `quantity_${index + 1}`;
+                            let metafieldKey = metafield.key;
+                            let metafieldQuantity = parseInt(quantity, 10) || 0;                      
+                            if (metafieldKey.startsWith('shipment_') && quantityKey === `quantity_${index + 1}`) {
+                                metafieldQuantities[metafieldKey] = metafieldQuantity;
+                            }                         
+                        });
+                        
+                        parsedMetafields.forEach((metafield, index) => {
+                            let [quantity, date] = metafield.value.split('|');
+                            let quantityKey = `quantity_${index + 1}`;
+                            console.log(`Key: ${metafield.key} ${quantityKey}: ${quantity} Date: ${date}`);
+                          
+                            let metafieldKey = metafield.key;
+                            let metafieldQuantityKey = quantityKey;
+                            let metafieldQuantity = quantity;
+                            let metafieldDate = date; 
+                            let deliveryDate = new Date();  
+
+                            if (inventoryQuantity <= 0 && metafieldDate) {
+                                if (inventoryQuantity >= metafieldQuantities.shipment_1) {
+                                    if (metafieldKey === 'shipment_1') {      
+                                        if (deliveryElement) {                                  
+                                            let [day, month, year] = date.split('-'); // Assuming date is in DD-MM-YYYY format
+                                            let parsedDate = new Date(`${year}-${month}-${day}`);                                    
+                                            let updatedDate = addBusinessDays(parsedDate, 3);                                    
+                                            let formattedDate = updatedDate.toLocaleDateString('en-US', { month: 'long', day: '2-digit' });                                    
+                                            deliveryElement.innerHTML = `<b>Delivery:</b> ${formattedDate}`;                                  
+                                            if (today > parsedDate) {                                    
+                                                let updatedsevenDate = addBusinessDays(today, 7);
+                                                let formattedsevenDate = updatedsevenDate.toLocaleDateString('en-US', { month: 'long', day: '2-digit' });                                   
+                                                deliveryElement.innerHTML = `<b>Delivery:</b> ${formattedsevenDate}`;
+                                            }
+                                            deliveryElement.setAttribute('data-delivery-set', "true"); // Mark delivery date as set
+                                        }                                
+                                    }                
+                                }
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error processing metafields:', error);
+                    }                  
+                }
+            });
+        }
+        updateDeliveryDate();       
+    
+});
+</script> -->

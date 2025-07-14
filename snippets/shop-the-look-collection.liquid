@@ -1,0 +1,234 @@
+{% if  block.settings.image != blank %}
+  {%- liquid                                          
+      assign image_aspect_ratio = block.settings.image.aspect_ratio | times: 1
+      assign image_aspect_ratio_m = block.settings.image.aspect_ratio | times: 1
+      assign image = block.settings.image                                                                  
+  -%} 
+  <div class="swiper-slide">
+  <div class="look">
+    <div class="look__image look__image--fullheights">
+      <div class="look__image-container"> 
+        <div class="small-hidden">
+         <a href= "{{ block.settings.banner_url }}"> {%- render 'image' image: image, sizes: '(min-width: 750px) 50vw, 100vw', aspect_ratio: image_aspect_ratio, modifier: 'look__image-bg', placeholder: 'collection-1' -%}</a>
+        </div>
+         <div class="desk-hidden">
+         <a href= "{{ block.settings.banner_url }}"> {%- render 'image' image: image, sizes: '(min-width: 750px) 50vw, 100vw', aspect_ratio: image_aspect_ratio_m, modifier: 'look__image-bg', placeholder: 'collection-1' -%} </a>
+        </div>
+          {% if block.settings.product_1 != blank %}
+           {%- capture style1 -%}
+              --dot-top: {{ block.settings.position_y_1 }}%;
+              --dot-left: {{ block.settings.position_x_1 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots1 -%}
+            <a type="button" href="{{ block.settings.product_1 }}" class="look__dot__button" style="{{ style1 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots1 != blank -%}
+            <div class="look__dots">
+              {{ look_dots1 }}
+            </div>
+          {%- endif -%}
+          {% endif %}  
+          {% if block.settings.product_2 != blank %}
+          {%- capture style2 -%}
+              --dot-top: {{ block.settings.position_y_2 }}%;
+              --dot-left: {{ block.settings.position_x_2 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots2 -%}
+             <a type="button" href="{{ block.settings.product_2 }}" class="look__dot__button" style="{{ style2 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}" data-slider-thumb="1-{{ forloop.index0 }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots2 != blank -%}
+            <div class="look__dots">
+              {{ look_dots2 }}
+            </div>
+          {%- endif -%}
+            {% endif %}
+            {% if block.settings.product_3 != blank %}
+            {%- capture style3 -%}
+              --dot-top: {{ block.settings.position_y_3 }}%;
+              --dot-left: {{ block.settings.position_x_3 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots3 -%}           
+            <a type="button" href="{{ block.settings.product_3 }}" class="look__dot__button" style="{{ style3 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}" data-slider-thumb="2-{{ forloop.index0 }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots3 != blank -%}
+            <div class="look__dots">
+              {{ look_dots3 }}
+            </div>
+          {%- endif -%}
+          {% endif %}
+      </div>
+    </div>  
+  </div>
+  </div>  
+{% endif %}  
+{% if  block.settings.image_2 != blank %}
+  {%- liquid                                          
+      assign image_aspect_ratio2 = block.settings.image_2.aspect_ratio | times: 3
+      assign image_aspect_ratio2_m = block.settings.image_2.aspect_ratio | times: 1
+      assign image2 = block.settings.image_2                                                                
+  -%} 
+  <div class="swiper-slide">
+  <div class="look">
+    <div class="look__image look__image--fullheights">
+      <div class="look__image-container"> 
+         <div class="small-hidden">
+          {%- render 'image' image: image2, sizes: '(min-width: 750px) 50vw, 100vw', aspect_ratio: image_aspect_ratio2, modifier: 'look__image-bg', placeholder: 'collection-2' -%}                                              
+         </div>
+          <div class="desk-hidden">
+           {%- render 'image' image: image2, sizes: '(min-width: 750px) 50vw, 100vw', aspect_ratio: image_aspect_ratio2_m, modifier: 'look__image-bg', placeholder: 'collection-2' -%}                                              
+          </div>
+          {% if block.settings.product_2_1 != blank %}
+           {%- capture style1 -%}
+              --dot-top: {{ block.settings.position_y_2_1 }}%;
+              --dot-left: {{ block.settings.position_x_2_1 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots1 -%}
+            <a type="button" href="{{ block.settings.product_2_1 }}" class="look__dot__button" style="{{ style1 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots1 != blank -%}
+            <div class="look__dots">
+              {{ look_dots1 }}
+            </div>
+          {%- endif -%}
+          {% endif %}  
+          {% if block.settings.product_2_2 != blank %}
+          {%- capture style2 -%}
+              --dot-top: {{ block.settings.position_y_2_2 }}%;
+              --dot-left: {{ block.settings.position_x_2_2 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots2 -%}
+             <a type="button" href="{{ block.settings.product_2_2 }}" class="look__dot__button" style="{{ style2 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots2 != blank -%}
+            <div class="look__dots">
+              {{ look_dots2 }}
+            </div>
+          {%- endif -%}
+            {% endif %}
+            {% if block.settings.product_2_3 != blank %}
+            {%- capture style3 -%}
+              --dot-top: {{ block.settings.position_y_2_3 }}%;
+              --dot-left: {{ block.settings.position_x_2_3 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots3 -%}           
+            <a type="button" href="{{ block.settings.product_2_3 }}" class="look__dot__button" style="{{ style3 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots3 != blank -%}
+            <div class="look__dots">
+              {{ look_dots3 }}
+            </div>
+          {%- endif -%}
+          {% endif %}
+      </div>
+    </div>  
+  </div>
+  </div>  
+{% endif %}  
+{% if  block.settings.image_3 != blank %}
+    {%- liquid                                          
+      assign image_aspect_ratio3 = block.settings.image_3.aspect_ratio | times: 3
+      assign image_aspect_ratio3_m = block.settings.image_3.aspect_ratio | times: 3
+      assign image3 = block.settings.image_3                                                               
+  -%} 
+  <div class="swiper-slide">
+  <div class="look">
+    <div class="look__image look__image--fullheights">
+      <div class="look__image-container"> 
+        <div class="small-hidden">
+         {%- render 'image' image: image3, sizes: '(min-width: 750px) 50vw, 100vw', aspect_ratio: image_aspect_ratio3, modifier: 'look__image-bg', placeholder: 'collection-3' -%}                                              
+        </div>
+          <div class="desk-hidden">
+          {%- render 'image' image: image3, sizes: '(min-width: 750px) 50vw, 100vw', aspect_ratio: image_aspect_ratio3_m, modifier: 'look__image-bg', placeholder: 'collection-3' -%} 
+          </div>
+          {% if block.settings.product_2_1 != blank %}
+           {%- capture style1 -%}
+              --dot-top: {{ block.settings.position_y_3_1 }}%;
+              --dot-left: {{ block.settings.position_x_3_1 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots1 -%}
+            <a type="button" href="{{ block.settings.product_3_1 }}" class="look__dot__button" style="{{ style1 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots1 != blank -%}
+            <div class="look__dots">
+              {{ look_dots1 }}
+            </div>
+          {%- endif -%}
+          {% endif %}  
+          {% if block.settings.product_3_2 != blank %}
+          {%- capture style2 -%}
+              --dot-top: {{ block.settings.position_y_3_2 }}%;
+              --dot-left: {{ block.settings.position_x_3_2 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots2 -%}
+             <a type="button" href="{{ block.settings.product_3_2 }}" class="look__dot__button" style="{{ style2 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots2 != blank -%}
+            <div class="look__dots">
+              {{ look_dots2 }}
+            </div>
+          {%- endif -%}
+            {% endif %}
+            {% if block.settings.product_3_3 != blank %}
+            {%- capture style3 -%}
+              --dot-top: {{ block.settings.position_y_3_3 }}%;
+              --dot-left: {{ block.settings.position_x_3_3 }}%;
+            {%- endcapture -%}
+
+          {%- capture look_dots3 -%}           
+            <a type="button" href="{{ block.settings.product_3_3 }}" class="look__dot__button" style="{{ style3 }}" aria-label="{{ 'general.accessibility.scroll_to_product' | t }}">
+              <span class="look__dot">
+                <span class="look__dot__icon"></span>
+              </span>
+            </a>
+          {%- endcapture -%}
+          {%- if look_dots3 != blank -%}
+            <div class="look__dots">
+              {{ look_dots3 }}
+            </div>
+          {%- endif -%}
+          {% endif %}
+      </div>
+    </div>  
+  </div>
+  </div>  
+{% endif %}  

@@ -1,0 +1,117 @@
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+    }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+<style>
+.jewelry_main_desktop img {
+  width: 100%;
+}
+.jewelry_main_mobile img {
+  width: 100%;
+}
+@media screen and (max-width: 749px) {
+  .jewelry_main_desktop{
+    display: none;
+  }
+}
+@media screen and (min-width: 750px) {
+  .jewelry_main_mobile{
+    display: none;
+  }
+}
+
+.title {
+  margin: 0 0 15px 0;
+  font-size: 36px;
+  font-family: 'MinervaModern';
+}
+@media screen and (max-width: 750px) {
+  .title {
+    font-size: 26px;
+  }
+}
+</style>
+<div class="section-{{ section.id }}-padding">
+ <div class="title">{{ section.settings.category_text }}</div>
+<div class="jewelry_main_desktop">
+  {% if section.settings.image_url != blank %}
+    <a href="{{ section.settings.image_url }}">
+  {% endif %}
+    <img src="{{ section.settings.jewelry_banner_desktop | img_url: 'master' }}" alt="Jewelry Banner Desktop" />
+  {% if section.settings.image_url != blank %}
+    </a>
+  {% endif %}
+</div>
+<div class="jewelry_main_mobile">
+  {% if section.settings.image_url != blank %}
+    <a href="{{ section.settings.image_url }}">
+  {% endif %}
+    <img src="{{ section.settings.jewelry_banner_mobile | img_url: 'master' }}" alt="Jewelry Banner Mobile" />
+  {% if section.settings.image_url != blank %}
+    </a>
+  {% endif %}
+</div>
+</div>
+
+{% schema %}
+  {
+    "name": "jewelry Banner",
+    "settings": [
+    {
+      "type": "text",
+      "id": "category_text",
+      "label": "Title"
+    }, 
+      {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "padding bottom",
+      "default": 36
+    },
+      {
+        "type": "image_picker",
+        "id": "jewelry_banner_desktop",
+        "label": "jewelry Banner desktop"
+      },
+      {
+        "type": "image_picker",
+        "id": "jewelry_banner_mobile",
+        "label": "jewelry Banner mobile"
+      },
+      {
+        "type": "url",
+        "id": "image_url",
+        "label": "URL"
+      }
+    ],
+    "presets": [
+      {
+        "name": "jewelry Banner",
+      }
+    ]
+  }
+{% endschema %}

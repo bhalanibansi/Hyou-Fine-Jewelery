@@ -1,0 +1,384 @@
+<style>
+  #shipping-date div p strong{
+    font-weight: 600;
+  }
+  #shipping-date div p{
+    font-size: 12px;
+      margin-top: 12px;
+  }
+</style>
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant 
+
+  if settings.currency_code_enable
+    assign current_variant_price = current_variant.price | money_with_currency
+    assign current_variant_compare_at_price = current_variant.compare_at_price | money_with_currency
+  else
+   
+  endif
+-%}
+{%- assign padding_top = block.settings.padding_top -%}
+{%- assign padding_bottom = block.settings.padding_bottom -%}
+
+{%- assign attributes = attributes | default: '' -%}
+
+{%- if padding_top != blank or padding_bottom != blank -%}
+  {%- capture block_style -%}
+    style="
+    {%- if padding_top != blank -%}
+      --block-padding-top:{{ padding_top }}px;
+    {%- endif -%}
+    {%- if padding_bottom != blank -%}
+      --block-padding-bottom:{{ padding_bottom }}px;
+    {%- endif -%}
+    "
+  {%- endcapture -%}
+{%- endif -%}
+
+{% for variant in product.variants %}
+  <div class="variant__description avail-offers" data-variant-id="{{variant.id}}"
+    data-variant-inventory-policy="{{ variant.inventory_policy }}"
+    data-variant-inventory-qty="{{ variant.inventory_quantity }}">    
+  </div>
+{% endfor %} 
+
+<div class="custom_delivery inv_policy" {{ block_style }}>
+  {%- liquid
+      assign icon_size = block.settings.icon_size
+      assign icon_color = block.settings.icon_color
+     assign width = block.settings.width
+      capture icon_style
+        echo 'style="'
+        echo '--icon-size: ' | append: icon_size | append: 'px;'
+        if icon_color != blank and icon_color != 'rgba(0,0,0,0)'
+          echo ' --text: ' | append: icon_color | append: ';'
+        endif
+        echo '"'
+      endcapture
+    -%}
+    
+    <div class="product__icon product__icon__container--{{ width }}" data-aos="img-in" {{ icon_style }}>
+      {%- liquid
+        if image
+          assign icon_width = icon_size
+          assign icon_width_retina = icon_width | times: 2
+          assign icon_sizes = icon_width | append: 'px'
+          assign icon_widths = icon_width | append: ', ' | append: icon_width_retina
+  
+          render 'image' image: image, width: icon_width_retina, sizes: icon_sizes, widths: icon_widths, show_backfill: false
+        else
+          render 'animated-icon', filename: block.settings.icon_name
+        endif
+      -%}
+    </div>
+
+   {% comment %} {% if current_variant.inventory_quantity > 0 %}
+      {% assign delivery_days_six = 3 | times:86400 %}         
+      {% assign current_date_six = 'now' | date: '%s' | plus: delivery_days_six | date: "%Y-%m-%d" %}     
+      {% assign delivery_date_six = current_date_six | date: "%Y-%m-%d" | date_add: delivery_days_six, 'days' %}        
+        <p id="fromDate">Get it delivered by:<span><b> {{ delivery_date_six | date: "%B %d" }}</b></span></p>
+    
+      {% elsif current_variant.inventory_quantity <= 0 %}
+       {% assign delivery_days_six = 25 | times:86400 %}         
+      {% assign current_date_six = 'now' | date: '%s' | plus: delivery_days_six | date: "%Y-%m-%d" %}     
+      {% assign delivery_date_six = current_date_six | date: "%Y-%m-%d" | date_add: delivery_days_six, 'days' %}        
+        <p id="fromDate">Get it delivered by:<span><b> {{ delivery_date_six | date: "%B %d" }}</b></span></p>
+     {% endif %}{% endcomment %}
+</div>
+
+
+<div id="shipping-date">   
+  {%- for variant in product.variants -%}
+    <div id="{{ variant.id }}" {% if product.selected_or_first_available_variant.id == variant.id %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+      {%- assign metafieldKeys = "shipment_1 shipment_2 shipment_3 shipment_4 shipment_5" | split: " " -%}  
+      {%- assign metafieldValue1 = variant.metafields.custom.shipment_1 -%}
+      {%- assign metafieldValue2 = variant.metafields.custom.shipment_2 -%}
+      {%- assign metafieldValue3 = variant.metafields.custom.shipment_3 -%}  
+      {%- assign metafieldValue4 = variant.metafields.custom.shipment_4 -%}  
+      {%- assign metafieldValue5 = variant.metafields.custom.shipment_5 -%}  
+      {%- assign inventoryQuantity = variant.inventory_quantity -%}
+      {%- assign showFromDate = true -%}    
+      
+      {%- assign delivery_days = 0 -%}   
+      {% if product.tags contains "Midamas" %}
+        {%- assign is_midamas = true -%} <!-- Check if product has the "Midamas" tag -->
+      {% else %}
+        {%- assign is_midamas = false -%}
+      {% endif %}
+    
+      {% assign today_date = 'now' | date: '%d-%m-%Y %H:%M:%S' %}     
+      {%- assign current_time = 'now' | date: "%H" -%}    
+      {%- assign current_hour = current_time | plus: 0 -%}
+      
+      {%- if variant.inventory_quantity > 0 -%}      
+        
+        {%- if current_hour >= 16 -%} 
+            {%- assign delivery_days = 4 -%} <!-- If it's after 4 PM, add an extra day -->          
+          {%- else -%}
+            {%- assign delivery_days = 3 -%}
+        {%- endif -%}
+        
+     {%- elsif variant.inventory_quantity <= 0 -%}
+        {%- if is_midamas -%}
+          {%- assign delivery_days = 35 -%} <!-- Set delivery days to 35 for "Midamas" products -->
+        {%- else -%}
+          {%- assign delivery_days = 18 -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- assign current_date = 'now' | date: "%s" -%}
+      {%- assign days_added = 0 -%}
+      
+      {%- capture final_date -%}
+        {%- assign days_to_add = delivery_days -%}
+        {%- assign increment_date = current_date -%}
+
+        {% comment %}
+          {%- for step in (1..1000) -%}
+          {%- assign day_of_week = increment_date | date: "%u" -%}
+          {%- if day_of_week != "6" and day_of_week != "7" -%}
+            {%- assign days_to_add = days_to_add | minus: 1 -%}
+          {%- endif -%}
+          {%- if days_to_add <= 0 -%}
+            {%- break -%}
+          {%- endif -%}
+          {%- assign increment_date = increment_date | plus: 86400 -%}
+        {%- endfor -%}
+        {% endcomment %}
+        {%- for step in (1..1000) -%}
+  {%- if is_midamas -%}
+    {%- assign days_to_add = days_to_add | minus: 1 -%}
+  {%- else -%}
+    {%- assign day_of_week = increment_date | date: "%u" -%}
+    {%- if day_of_week != "6" and day_of_week != "7" -%}
+      {%- assign days_to_add = days_to_add | minus: 1 -%}
+    {%- endif -%}
+  {%- endif -%}
+  
+  {%- if days_to_add <= 0 -%}
+    {%- break -%}
+  {%- endif -%}
+
+  {%- assign increment_date = increment_date | plus: 86400 -%}
+{%- endfor -%}
+
+
+        {%- assign final_date = increment_date | date: "%B %d" -%}
+        {{ final_date }}
+      {%- endcapture -%}
+
+      {%- assign final_date_minus_two = increment_date | minus: 172800 | date: "%B %d" -%}
+      
+      {%- if inventoryQuantity <= 0 -%}
+      {%- if metafieldValue1 != blank -%}
+        {%- assign metafieldParts = metafieldValue1 | split: "|" -%}
+        {%- if metafieldParts.size > 1 -%}
+          {%- assign delivery_days_three = 3 -%}
+          {%- assign cst_inv_qty = metafieldParts[0] | plus: 0 -%}
+          {%- assign originaldate = metafieldParts[1] | date: '%d-%m-%Y' | date: '%s' -%}        
+          {%- assign increment_date1 = originaldate -%}
+          {%- assign days_to_add1 = delivery_days_three -%}
+
+          {%- if inventoryQuantity <= 0 and originaldate < current_date and cst_inv_qty < inventoryQuantity  -%}
+            {%- assign increment_date1 = current_date -%}  <!-- Reset increment_date1 to current date -->
+            {%- assign days_to_add1 = 6 -%}  <!-- Add 6 days to current date -->
+          {%- endif -%}
+      
+          {%- if inventoryQuantity <= 0 and cst_inv_qty < inventoryQuantity -%}
+            {%- for step in (1..1000) -%}
+              {%- assign day_of_week1 = increment_date1 | date: "%u" -%}             
+              
+              {%- if day_of_week1 != "6" and day_of_week1 != "7" -%}
+                {%- assign days_to_add1 = days_to_add1 | minus: 1 -%}
+              {%- endif -%}             
+              
+              {%- if days_to_add1 <= 0 -%}
+                {%- break -%}
+              {%- endif -%}
+           
+              {%- assign increment_date1 = increment_date1 | plus: 86400 -%}  <!-- Add one day -->              
+              {%- endfor -%}
+      
+            {%- assign final_date1 = increment_date1 | date: "%B %d" -%}
+              
+            <p><strong>Delivered By:</strong><span class="pro-del-date"> <b>{{ final_date1 }}</b></span></p>
+            <p style="display:none;"><strong>Delivered By:</strong><span class="checkout-delivery"> <b>{{ increment_date1 | minus: 172800 | date: "%B %d" }}</b></span></p>            
+            {%- assign showFromDate = false -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}   
+        
+      {%- if metafieldValue2 != blank -%}
+        {%- assign metafieldParts = metafieldValue2 | split: "|" -%}
+        {%- if metafieldParts.size > 1 -%}
+          {%- assign delivery_days_three = 3 -%}
+          {%- assign cst_inv_qty2 = metafieldParts[0] | plus: 0 -%}
+          {%- assign originaldate = metafieldParts[1] | date: '%d-%m-%Y' | date: '%s' -%}
+          {%- assign increment_date1 = originaldate -%}
+          {%- assign days_to_add1 = delivery_days_three -%}
+          {%- assign sec_meta_value = cst_inv_qty2 | plus: cst_inv_qty -%}  
+          
+          {%- if originaldate < current_date and cst_inv_qty2 < inventoryQuantity  -%}
+            {%- assign increment_date1 = current_date -%}  <!-- Reset increment_date1 to current date -->
+            {%- assign days_to_add1 = 6 -%}  <!-- Add 6 days to current date -->
+          {%- endif -%}
+          
+          {%- if cst_inv_qty >= inventoryQuantity and sec_meta_value < inventoryQuantity -%}
+            {%- for step in (1..1000) -%}
+              {%- assign day_of_week1 = increment_date1 | date: "%u" -%}
+              {%- if day_of_week1 != "6" and day_of_week1 != "7" -%}
+                {%- assign days_to_add1 = days_to_add1 | minus: 1 -%}
+              {%- endif -%}
+              {%- if days_to_add1 <= 0 -%}
+                {%- break -%}
+              {%- endif -%}
+              {%- assign increment_date1 = increment_date1 | plus: 86400 -%} <!-- Add one day -->
+            {%- endfor -%}
+            {%- assign final_date1 = increment_date1 | date: "%B %d" -%}
+            <p><strong>Delivered By:</strong><span class="pro-del-date"> <b> {{ final_date1 }}</b></span></p>
+            <p style="display:none;"><strong>Delivered By:</strong><span class="checkout-delivery"> <b> {{ increment_date1 | minus: 172800 | date: "%B %d" }}</b></span></p>      
+            {%- assign showFromDate = false -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}        
+  
+        {%- if metafieldValue3 != blank -%}          
+          {%- assign metafieldParts = metafieldValue3 | split: "|" -%}
+            {%- if metafieldParts.size > 1 -%}
+              {%- assign delivery_days_three = 3 -%}  
+              {%- assign cst_inv_qty3 = metafieldParts[0] | plus: 0 -%}
+              {%- assign originaldate = metafieldParts[1] | date: '%d-%m-%Y' | date: '%s' -%}  
+              {%- assign increment_date1 = originaldate -%}
+              {%- assign days_to_add1 = delivery_days_three -%}
+              {%- assign trd_meta_value = cst_inv_qty3 | plus: sec_meta_value -%} 
+
+              {%- if originaldate < current_date and cst_inv_qty3 < inventoryQuantity  -%}
+                {%- assign increment_date1 = current_date -%}  <!-- Reset increment_date1 to current date -->
+                {%- assign days_to_add1 = 6 -%}  <!-- Add 6 days to current date -->
+              {%- endif -%}
+              
+              {%- if sec_meta_value >= inventoryQuantity and trd_meta_value < inventoryQuantity -%}
+                {%- for step in (1..1000) -%}
+                  {%- assign day_of_week1 = increment_date1 | date: "%u" -%}
+                  {%- if day_of_week1 != "6" and day_of_week1 != "7" -%}
+                    {%- assign days_to_add1 = days_to_add1 | minus: 1 -%}
+                  {%- endif -%}
+                  {%- if days_to_add1 <= 0 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                  {%- assign increment_date1 = increment_date1 | plus: 86400 -%} <!-- Add one day -->
+                {%- endfor -%}
+                {%- assign final_date1 = increment_date1 | date: "%B %d" -%}
+                <p><strong>Delivered By:</strong><span class="pro-del-date"><b> {{ final_date1 }}</b></span></p>
+                <p style="display:none;"><strong>Delivered By:</strong><span class="checkout-delivery"><b> {{ increment_date1 | minus: 172800 | date: "%B %d" }}</b></span></p>               
+                {%- assign showFromDate = false -%}
+              {%- endif -%}
+           {%- endif -%} 
+        {%- endif -%}
+    
+        {%- if metafieldValue4 != blank -%}         
+          {%- assign metafieldParts = metafieldValue4 | split: "|" -%}
+            {%- if metafieldParts.size > 1 -%}
+              {%- assign delivery_days_three = 3 -%}  
+              {%- assign cst_inv_qty4 = metafieldParts[0] | plus: 0 -%}
+              {%- assign originaldate = metafieldParts[1] | date: '%d-%m-%Y' | date: '%s' -%} 
+              {%- assign increment_date1 = originaldate -%}
+              {%- assign days_to_add1 = delivery_days_three -%}      
+              {%- assign four_meta_value = cst_inv_qty4 | plus: trd_meta_value -%}
+              
+              {%- if originaldate < current_date and cst_inv_qty4 < inventoryQuantity  -%}
+                {%- assign increment_date1 = current_date -%}  <!-- Reset increment_date1 to current date -->
+                {%- assign days_to_add1 = 6 -%}  <!-- Add 6 days to current date -->
+              {%- endif -%}
+              
+              {%- if trd_meta_value >= inventoryQuantity and four_meta_value < inventoryQuantity -%} 
+                {%- for step in (1..1000) -%}
+                  {%- assign day_of_week1 = increment_date1 | date: "%u" -%}
+                  {%- if day_of_week1 != "6" and day_of_week1 != "7" -%}
+                    {%- assign days_to_add1 = days_to_add1 | minus: 1 -%}
+                  {%- endif -%}
+                  {%- if days_to_add1 <= 0 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                  {%- assign increment_date1 = increment_date1 | plus: 86400 -%} <!-- Add one day -->
+                {%- endfor -%}
+                {%- assign final_date1 = increment_date1 | date: "%B %d" -%}
+                <p><strong>Delivered By:</strong><span class="pro-del-date"><b> {{ final_date1 }}</b></span></p>
+                <p style="display:none;"><strong>Delivered By:</strong><span class="checkout-delivery"><b> {{ increment_date1 | minus: 172800 | date: "%B %d" }}</b></span></p>
+                {%- assign showFromDate = false -%}
+              {%- endif -%}
+            {%- endif -%}
+        {%- endif -%} 
+
+        {%- if metafieldValue5 != blank -%}         
+          {%- assign metafieldParts = metafieldValue5 | split: "|" -%}
+            {%- if metafieldParts.size > 1 -%}
+              {%- assign delivery_days_three = 3 -%}  
+              {%- assign cst_inv_qty5 = metafieldParts[0] | plus: 0 -%}
+              {%- assign originaldate = metafieldParts[1] | date: '%d-%m-%Y' | date: '%s' -%}               
+               {%- assign increment_date1 = originaldate -%}
+              {%- assign days_to_add1 = delivery_days_three -%}  
+
+              {%- if originaldate < current_date and cst_inv_qty5 < inventoryQuantity  -%}
+                {%- assign increment_date1 = current_date -%}  <!-- Reset increment_date1 to current date -->
+                {%- assign days_to_add1 = 6 -%}  <!-- Add 6 days to current date -->
+              {%- endif -%}
+              
+              {%- assign five_meta_value = cst_inv_qty5 | plus: four_meta_value -%}
+              {%- if four_meta_value >= inventoryQuantity and five_meta_value < inventoryQuantity -%} 
+                 {%- for step in (1..1000) -%}
+                  {%- assign day_of_week1 = increment_date1 | date: "%u" -%}
+                  {%- if day_of_week1 != "6" and day_of_week1 != "7" -%}
+                    {%- assign days_to_add1 = days_to_add1 | minus: 1 -%}
+                  {%- endif -%}
+                  {%- if days_to_add1 <= 0 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                  {%- assign increment_date1 = increment_date1 | plus: 86400 -%} <!-- Add one day -->
+                {%- endfor -%}
+                {%- assign final_date1 = increment_date1 | date: "%B %d" -%}
+                <p><strong>Delivered By:</strong><span class="pro-del-date"><b> {{ final_date1 }}</b></span></p>
+                <p style="display:none;"><strong>Delivered By:</strong><span class="checkout-delivery"><b> {{ increment_date1 | minus: 172800 | date: "%B %d" }}</b></span></p>
+                {%- assign showFromDate = false -%}
+              {%- endif -%}
+            {%- endif -%}
+        {%- endif -%} 
+
+      {%- endif -%}
+
+      {%- if showFromDate == true -%}
+        <p><strong>Delivered By:</strong><span class="pro-del-date"> <b>{{ final_date }}</b></span></p>
+        <p style="display:none;"><strong>Delivered By:</strong><span class="checkout-delivery"> <b>{{ final_date_minus_two }}</b></span></p>
+      {%- endif -%}
+    </div>   
+  {%- endfor -%}
+</div>
+
+
+<div class="inventory_with_icon">
+ <p class="inventoryMessage" style="font-weight: bold;"> </p>
+ <!-- <svg class="w-6 h-6 text-gray-800 dark:text-white" id="eye_icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="width: 20px; margin-left: 10px;">
+    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z"/>
+    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+  </svg> -->
+  <img src="https://cdn.shopify.com/s/files/1/0838/6628/8436/files/44229.png?v=1741686190" id="eye_icon" alt="eye icon" style="cursor: pointer;"/>
+   <div id="eye_content" class="eye_icon_modal">
+      <div class="eye_icon_modal-content">
+        <span class="eye_icon_close">&times;</span>
+        
+        <p>In stock:</p>
+        <span>It's in our warehouse in New York and ready for you. In-Stock items typically ship within 1-2 business days from the purchase date.</span>
+        <p>Shipping Later:</p>
+        <span>This design is not in stock but is under manufacturing! You can still make the purchase, and your order will be placed in line to be shipped once it arrives. 
+          The anticipated shipping date is provided on the product page and during checkout for your convenience</span>
+      </div>
+   </div>
+
+</div>
+<style>
+  .motherday-content {
+    display: none;
+  }
+</style>
+

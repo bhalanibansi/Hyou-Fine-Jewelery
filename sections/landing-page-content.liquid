@@ -1,0 +1,52 @@
+{{ 'landing-page.css' | asset_url | stylesheet_tag }} 
+
+  <div class="landing_block product__wrapper">
+  <div class="product_detail">
+    <h4>{{ section.settings.pro-title }}</h4>
+    <span>{{ section.settings.pro-subtitle }}</span>
+    <h5>{{ section.settings.pro-price }}</h5>
+    <h6>{{ section.settings.pro-delivery }}</h6>
+    <p>{{ section.settings.stock-msg }}</p>
+    <button class="add-to-cart-btn">Add to Cart</button>  
+  </div>  
+     {% render 'shipping_icon' %}                                                                                                                                         
+  </div>
+{% schema %}
+{
+  "name": "Landing Page Content",
+  "settings": [    
+      {
+        "type": "text",
+        "id": "pro-title",
+        "label": "Product Title"
+      },
+      {
+        "type": "text",
+        "id": "pro-price",
+        "label": "Product Price"
+      },
+      {
+        "type": "text",
+        "id": "pro-delivery",
+        "label": "Delivery Date"
+      },
+      {
+        "type": "text",
+        "id": "stock-msg",
+        "label": "Stock Massage"
+      },
+      {
+          "type": "text",
+          "id": "pro-subtitle",
+          "label": "Product SubTitle"
+        }
+      
+  ],
+
+  "presets": [
+    {
+      "name": "Landing Page Content"
+    }
+  ]  
+}
+{% endschema %}

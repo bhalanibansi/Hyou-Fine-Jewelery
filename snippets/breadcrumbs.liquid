@@ -1,0 +1,75 @@
+{% comment %} {% assign breadcrumbs_modifier = breadcrumbs_modifier | default: '' %}
+  {% capture divider_html %}
+    <span class="breadcrumbs__arrows"><svg xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+      <path d="M1 1L6 5L1 9" stroke="#5F5F5F" stroke-width="0.75191"/>
+      </svg>
+    </span>
+  {% endcapture %}
+<nav class="breadcrumbs {{ breadcrumbs_modifier }}">
+  <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>  
+  {{ divider_html }}
+  
+  {% if template contains 'product' %}
+    {%- if collection -%}
+      {{ collection.title | link_to: collection.url }}
+      {{ divider_html }}
+    {%- endif -%}
+    <span>{{ product.title }}</span> <!-- Display product title -->
+  {%- elsif template.name == 'article' -%}
+    {{ blog.title | link_to: blog.url }}    
+    {{ divider_html }}
+    <span>{{ page_title }}</span> <!-- For articles, display the page title -->
+  {% else %}
+    <span>{{ page_title }}</span> <!-- For other templates, display the page title -->
+  {% endif %}
+</nav> {% endcomment %}
+
+{% assign breadcrumbs_modifier = breadcrumbs_modifier | default: '' %}
+  {% capture divider_html %}
+    <span class="breadcrumbs__arrows">
+      <svg xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+        <path d="M1 1L6 5L1 9" stroke="#5F5F5F" stroke-width="0.75191"/>
+      </svg>
+    </span>
+  {% endcapture %}
+          
+<nav class="breadcrumbs {{ breadcrumbs_modifier }}">
+  <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>  
+  {{ divider_html }}  
+  {% if template.name == 'collection' %}
+    <span>{{ collection.title }}</span> <!-- Display collection title on collection page -->
+  {% elsif template.name == 'product' %}
+    {%- if collection -%}
+      {{ collection.title | link_to: collection.url }}
+      {{ divider_html }}
+    {%- endif -%}
+    <span>{{ product.title }}</span> <!-- Display product title -->
+  {%- elsif template.name == 'article' -%}
+    {{ blog.title | link_to: blog.url }}    
+    {{ divider_html }}
+    <span>{{ page_title }}</span> <!-- For articles, display the page title -->
+  {% else %}
+    <span>{{ page_title }}</span> <!-- For other templates, display the page title -->
+  {% endif %}
+</nav>
+
+{% comment %}{% assign breadcrumbs_modifier = breadcrumbs_modifier | default: '' %}
+{% capture divider_html %}
+  <span class="breadcrumbs__arrows">
+    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="10" viewBox="0 0 7 10" fill="none">
+      <path d="M1 1L6 5L1 9" stroke="#5F5F5F" stroke-width="0.75191"/>
+    </svg>
+  </span>
+{% endcapture %}
+
+{% if template contains 'product' %}
+  <nav class="breadcrumbs {{ breadcrumbs_modifier }}">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>  
+    {{ divider_html }}    
+    {%- if collection -%}
+      {{ collection.title | link_to: collection.url }}
+      {{ divider_html }}
+    {%- endif -%}    
+    <span>{{ product.title }}</span> <!-- Display product title -->
+  </nav>
+{% endif %}{% endcomment %}

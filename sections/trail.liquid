@@ -1,0 +1,421 @@
+<style>
+ 
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mob }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mob }}px;
+  }
+  .trail-blazers .trail-blazers-details{
+    margin-bottom:30px;
+  }
+  .trail-blazers .trail-blazers-details h2{
+    color: #000;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
+    text-transform: capitalize;
+  }
+  .trail-blazers .trail-blazers-details p{
+    color: #000;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 20px;
+  }
+  .trail-blazers .swiper-container{
+    position:relative;
+    overflow-x:hidden;
+    /* height:750px;
+    width: 90vw; */
+    /* padding: 0 29px; */
+  }
+  .trail-blazers .swiper-container .swiper-wrapper{
+    /* height:auto!important; */
+    align-items: center;
+  }
+  .trail-blazers .trail-blazer-slider .swiper-button-next svg, .trail-blazers .trail-blazer-slider .swiper-button-prev svg{
+    width:60%;
+  }
+  .trail-blazers .trail-blazer-slider .swiper-button-prev, .swiper-rtl .swiper-button-next {
+    left: var(--swiper-navigation-sides-offset,122px);
+    right: auto;
+  }
+  .trail-blazers .trail-blazer-slider .swiper-button-next, .swiper-rtl .swiper-button-prev {
+    right: var(--swiper-navigation-sides-offset,122px);
+  }
+  /* .trail-blazers .trail-blazer-slider .swiper-slide img{
+    width:100%;
+    height:auto;
+  } */
+  .trail-blazers .trail-blazer-slider .swiper-slide h3{
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
+  .trail-blazers .trail-blazer-slider .swiper-slide p{
+    color:#000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 18px; 
+    text-transform: uppercase;
+  }
+  .trail-blazers .trail-blazer-slider .swiper-slide.swiper-slide-next{
+    margin-bottom:12%;
+  }
+  /* .trail-blazers .trail-blazer-slider .swiper-slide.swiper-slide-prev img, .trail-blazers .trail-blazer-slider .swiper-slide.swiper-slide-next img{
+    height:400px;
+  } */
+  /* .trail-blazers .trail-blazer-slider .swiper-slide.swiper-slide-active img{
+    height:590px;
+  } */
+  .trail-blazers .trail-blazer-slider .swiper-button-next:after, .trail-blazers .trail-blazer-slider .swiper-button-prev:after{
+    display:none;
+  }
+  /* .trail-blazers-desktop{
+      display:none;
+  }
+  .trail-blazers-mobile{
+      display:block;
+  } */
+   .slider_align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 3%;
+  }
+  .frst-img{
+    width: 348.545px;   
+  }
+  .Product_bigImage.sec-img {
+	width: 525px;	
+  }
+  .Product_bigImage.trd-img {
+	width: 348.545px;	
+  }
+  .slide3 {
+	margin-bottom: 7%;
+}
+  @media screen and (max-width:767px){
+    .trail-blazers .trail-blazer-slider .swiper-slide.swiper-slide-next{
+    margin-bottom:0;
+  }
+    .trail-blazers .swiper-container .swiper-wrapper{
+      height: fit-content !important;
+    }
+    .trail-blazers .swiper-container{
+      overflow: hidden;
+    }
+    .slider_align{
+      flex-wrap: wrap;
+       align-items: center;
+      /* flex-direction: column; */
+      row-gap: 15px;
+    }
+    .trail-blazers .swiper-container{
+      padding: 0;
+    }
+    .Product_bigImage.sec-img{
+      width: 100%;
+      height: auto;
+    /* margin-bottom: 10px;  */
+    }
+    
+    .frst-img,
+  .Product_bigImage.trd-img {
+    width: auto; 
+    max-width: 100%; 
+    height: auto; 
+    /* margin-bottom: 10px;  */
+  }
+
+  .slide2 {
+    width: auto; 
+    max-width: 100%;
+    height: auto;
+    order: -1;     
+  }
+
+  .slide1 {
+    width: 47%; 
+    /* max-width: 50%; */
+    height: auto;
+    margin-bottom: 0;
+    margin-right: 5px; 
+    order: 1;    
+  }
+
+  .slide3 {
+    width: 47%; 
+    /* max-width: 50%; */
+    height: auto;
+    margin-bottom: 0;
+    order: 2;     
+  }
+   /* .trail-blazer-slider .swiper-button-next, .trail-blazer-slider .swiper-button-prev{
+      display: none !important;
+   }     */
+    .trail-blazers .trail-blazer-slider .swiper-slide h3{
+      font-size: 12px;
+    }
+    .trail-blazers .trail-blazer-slider .swiper-button-next, .swiper-rtl .swiper-button-prev{
+      right: var(--swiper-navigation-sides-offset,0px);
+    }
+    .trail-blazers .trail-blazer-slider .swiper-button-prev, .swiper-rtl .swiper-button-next{
+        left: var(--swiper-navigation-sides-offset,0px);
+    }
+   
+} 
+@media screen and (min-width:768px) and (max-width:1365px){
+  .frst-img {
+    width: 100%;
+  }
+  .Product_bigImage.sec-img {
+      width: 100%;
+  }
+  .Product_bigImage.trd-img {
+	width: 100%;
+  }
+  .slider_align{
+    gap: 23px;
+  }
+  .slide1{
+    margin-top: 9%;
+  }
+  .slide3 {
+	margin-bottom: 7%;
+}
+}
+@media screen and (min-width:750px) {
+       .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+      .trail-blazers-desktop{
+        display:block;
+      }
+      .trail-blazers-mobile{
+        display:none;
+      }
+  }
+</style>
+<section class="trail-blazers trail-blazers-desktop section-{{ section.id }}-padding">
+  <div class="wrapper--full-padded">
+     <div class="trail-blazers-details">
+       <h2>{{ section.settings.heading }}</h2>
+       <p>{{ section.settings.sub-text }}</p>
+     </div>
+     <div class="swiper-container trail-blazer-slider">
+      <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+                {% assign product = all_products[block.settings.product] %}
+                {% assign block_first_variant = product.selected_or_first_available_variant %}
+                {% assign featured_img_src = block_first_variant.featured_img.src | default: product.featured_image.src %}               
+                {% assign compare_at_price = block_first_variant.compare_at_price %}
+          
+                {% assign product2 = all_products[block.settings.product2] %}
+                {% assign block_first_variant2 = product2.selected_or_first_available_variant %}
+                {% assign featured_img_src2 = block_first_variant2.featured_img.src | default: product2.featured_image.src %}               
+                {% assign compare_at_price2 = block_first_variant2.compare_at_price %}
+
+                {% assign product3 = all_products[block.settings.product3] %}
+                {% assign block_first_variant3 = product3.selected_or_first_available_variant %}
+                {% assign featured_img_src3 = block_first_variant3.featured_img.src | default: product3.featured_image.src %}               
+                {% assign compare_at_price3 = block_first_variant3.compare_at_price %}
+          
+                
+                 <div class="swiper-slide">
+                    <div class="slider_align">
+                            {% if block.settings.product != blank  %}
+                              <div class="slide1">
+                                <a href="{{ product.url }}">
+                                 {% if block.settings.custom-img != blank  %}
+                                  
+                                   <img class="Product_bigImage test frst-img" src="{{ block.settings.custom-img | img_url: '' }}" alt="{{ block.settings.custom-img.alt }}" />
+                                  
+                                 {% else %}
+                                   <img class="Product_bigImage frst-img" src="{{ featured_img_src | img_url: '' }}" alt="{{ product.featured_img.alt }}" />
+                                 {% endif %}
+                               </a>
+                               <a href="{{ product.url }}">
+                                 <h3>{{ product.title }}</h3>
+                               </a>
+                                 <p>{{ product.price | money_without_trailing_zeros | remove : "USD" }}</p>
+                              </div>
+                            {% endif %} 
+                    
+                            {% comment %}{% if block.settings.product2 != blank  %}
+                            <div class="slide2">
+                                 <a href="{{ product2.url }}">
+                                 {% if block.settings.custom-img2 != blank  %}
+                                    <a href="{{ block.settings.custom-img2_link }}">
+                                     <img class="Product_bigImage test sec-img" src="{{ block.settings.custom-img2 | img_url: '' }}" alt="{{ block.settings.custom-img2.alt }}" />
+                                    </a>
+                                 {% else %}
+                                   <img class="Product_bigImage sec-img" src="{{ featured_img_src2 | img_url: '' }}" alt="{{ product2.featured_image.alt }}" />
+                                 {% endif %}
+                               </a>
+                               <a href="{{ product2.url }}">
+                                 <h3>{{ product2.title }}</h3>
+                               </a>
+                                 <p>{{ product2.price | money_without_trailing_zeros | remove : "USD" }}</p>
+                            </div>
+                            {% endif %} {% endcomment %}
+                            <div class="slide2">
+                                <video autoplay="" muted="" loop="" playsinline="" data-wow-offset="60" data-duration=".5s" class="Product_bigImage sec-img">
+                                  <source src="{{ block.settings.desk-video }}" type="video/mp4">                 
+                                </video>
+                            </div>
+                    
+                            {% if block.settings.product3 != blank  %}
+                            <div class="slide3">
+                                 <a href="{{ product3.url }}">
+                                 {% if block.settings.custom-img3 != blank  %}
+                                   <img class="Product_bigImage test trd-img" src="{{ block.settings.custom-img3 | img_url: '' }}" alt="{{ block.settings.custom-img3.alt }}" />
+                                 {% else %}
+                                   <img class="Product_bigImage trd-img" src="{{ featured_img_src3 | img_url: '' }}" alt="{{ product.featured_img3.alt }}" />
+                                 {% endif %}
+                               </a>
+                               <a href="{{ product3.url }}">
+                                 <h3>{{ product3.title }}</h3>
+                               </a>
+                                 <p>{{ product3.price | money_without_trailing_zeros | remove : "USD" }}</p>
+                            </div>
+                          {% endif %}
+                      </div>
+                 </div>
+                
+        {% endfor %}
+      </div>
+      <div class="swiper-button-next">
+        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">
+          <path d="M8.7069 7.29289C9.09742 7.68342 9.09742 8.31658 8.7069 8.70711L2.34294 15.0711C1.95241 15.4616 1.31925 15.4616 0.928722 15.0711C0.538198 14.6805 0.538198 14.0474 0.928722 13.6569L6.58558 8L0.928722 2.34315C0.538198 1.95262 0.538198 1.31946 0.928722 0.928932C1.31925 0.538408 1.95241 0.538408 2.34294 0.928932L8.7069 7.29289ZM6.30859 7L7.99979 7V9L6.30859 9V7Z" fill="black"/>
+        </svg>
+      </div>
+      <div class="swiper-button-prev">
+        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">
+          <path d="M0.290906 7.29289C-0.099618 7.68342 -0.099618 8.31658 0.290906 8.70711L6.65487 15.0711C7.04539 15.4616 7.67856 15.4616 8.06908 15.0711C8.45961 14.6805 8.45961 14.0474 8.06908 13.6569L2.41223 8L8.06908 2.34315C8.45961 1.95262 8.45961 1.31946 8.06908 0.928932C7.67856 0.538408 7.04539 0.538408 6.65487 0.928932L0.290906 7.29289ZM2.68921 7L0.998013 7V9L2.68921 9V7Z" fill="black"/>
+        </svg>
+      </div>
+     </div>
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector('.Product_bigImage');
+
+// Check if the device is iOS
+const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+// Autoplay video if not on iOS
+if (!iOS) {
+  video.play();
+}
+
+</script>
+            
+{% schema %}
+  {
+    "name": "trail blazers",
+    "settings": [
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 36
+      }, {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 36
+      }, {
+        "type": "range",
+        "id": "padding_top_mob",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding top Mobile",
+        "default": 20
+      }, {
+        "type": "range",
+        "id": "padding_bottom_mob",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding bottom Mobile",
+        "default": 20
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "sub-text",
+        "label": "Details"
+      }
+    ],
+     "blocks": [
+      {
+        "name": "Choose product",
+        "type": "Product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Select product"
+          },
+          {
+            "type": "image_picker",
+            "id": "custom-img",
+            "label": "custom image"
+          },          
+           {
+            "type": "text",
+            "id": "desk-video",
+            "label": "Video"
+          },          
+          {
+            "type": "product",
+            "id": "product3",
+            "label": "Select product 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "custom-img3",
+            "label": "custom image 3"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "product-slider"
+
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

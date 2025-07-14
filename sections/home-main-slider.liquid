@@ -1,0 +1,110 @@
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0  }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0  }}px;
+    }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+<div class="page-width category_mob_main section-{{ section.id }}-padding">
+  <div class="title1">{{ section.settings.category_text }}</div>
+  <div class="swiper main_home_slider">
+    <div class="swiper-wrapper">
+      {%- for block in section.blocks -%}
+        <div class="swiper-slide category_main_slide">
+          {% if block.settings.image_url != blank %}
+            <a class="collection-link" href="{{ block.settings.image_url }}">
+          {% endif %}    
+              {% if block.settings.image_mob %}
+                {% render 'image-hero', 
+                  image: block.settings.image_mob,     
+                  fetchpriority: 'high' 
+                %}
+              {% endif %}
+          {% if block.settings.image_url != blank %}
+             </a>
+          {% endif %}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+<script defer>
+  document.addEventListener("DOMContentLoaded", function() {
+    var landingslider = new Swiper(".section-{{ section.id }}-padding .main_home_slider", {
+      slidesPerView: 1.5,
+      spaceBetween: 10,
+      breakpoints: {
+        450: {
+            slidesPerView: 3.5,
+            spaceBetweenSlides: 10
+        }
+      }
+    });
+     });
+</script>
+{% schema %}
+{
+  "name": "Home trending slider",
+  "tag": "section",
+  "disabled_on": {
+  "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "category_text",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+     {
+      "type": "Home_slide",
+      "name": "Home Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_mob",
+          "label": "Mobile image"
+        },
+        {
+          "type": "url",
+          "id": "image_url",
+          "label": "URL"
+        },
+      ]
+    }
+  ],
+  "presets": [
+  {
+    "name": "Home trending slider",
+  }
+]
+}
+{% endschema %}

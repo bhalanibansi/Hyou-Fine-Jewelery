@@ -1,0 +1,18 @@
+
+
+
+
+    {%- if video != nil -%}
+    <div class="video-background {{ desktop_height }} {{ mobile_height }}">
+      <div class="video__poster">
+        {{ video_poster }}
+      </div>
+      <video-background class="video__player" data-video-player data-video-id="{{ section.id }}-video-background">
+        <video autoplay loop muted controls>       
+           <source src="{{ video }}" type="video/mp4">            
+          </video>
+      </video-background>
+    </div>
+  {%- else -%}
+    {{ video_poster }}
+  {%- endif -%}

@@ -1,0 +1,77 @@
+@font-face {
+  font-family: Inter;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/inter/inter_n4.481bd4d19704ca98fb1d3abd50c668b6962860a2.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=047d23d048baed46db07f4b7d17ac8db43d9954ef57124cccd0c8bf50efba456") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/inter/inter_n4.5a356a4c1877691cd26008ee4a5c7ada675c80ce.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=81d4e8102b82ca8ae00a7b57016db1e7c953a4aa4e9ae43832b6ac0167bb9d17") format("woff");
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_n4.7fd0287595be20cd5a683102bf49d073b6abf144.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=3e69287529dade2066bdace5f9c2fa29bc9b85205f4943402393bdf606ee9924") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_n4.a26a334a0852627a5f36b195112385b0cd700077.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=fa32e61674618f7b75bb6481ebd1fe3578067e69edc036e1210e5c45d2c02ad3") format("woff");
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_n4.7fd0287595be20cd5a683102bf49d073b6abf144.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=3e69287529dade2066bdace5f9c2fa29bc9b85205f4943402393bdf606ee9924") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_n4.a26a334a0852627a5f36b195112385b0cd700077.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=fa32e61674618f7b75bb6481ebd1fe3578067e69edc036e1210e5c45d2c02ad3") format("woff");
+}
+
+
+
+  @font-face {
+  font-family: Inter;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/inter/inter_n5.4e013095af5df852d965c6d0d5c22626d12ca9b1.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=ef19a620905bc66d10b33ee25186dceaa50f449c8b88856d8237bc3863d3ab1b") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/inter/inter_n5.a68b7118da8e36cefdfa5a16eb3ccd7b79151b88.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=cb0512980fa1ef424870a15c299a43e24e7433fa1a6c488f4f3353b15fe7cc4a") format("woff");
+}
+
+
+
+
+  @font-face {
+  font-family: "Avenir Next";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_n5.972a96b7a049f12c89d6d1cd0e1b6c9211f7ba14.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=9c2d9defb4e7dfeeef5fe2d94bf9b90401e56281a4479e6e0990106bb0ae46d7") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_n5.9e88d20fa9eb66ba268ac60ab013006ef69a310a.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=1b9c78f9843c8d7f4b5e1f0d6ca3f814fa33ace4cfb3e4686499062680420f7a") format("woff");
+}
+
+
+
+
+
+
+
+  @font-face {
+  font-family: "Avenir Next";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_i4.f1583d9f457b68e44fbda187a48b4096d547d7f4.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=7609580f7503bcfcf4281cc4b678b8d7eca874d13a689a4a57552a74c26e9e60") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_i4.67fb53a3e0351125941146246183577ae8d8bf23.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=3c2140126d84dfd78b257adbc7cb3b186fd48e35b6b02c942216b501ff79ac5b") format("woff");
+}
+
+
+
+
+  @font-face {
+  font-family: "Avenir Next";
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_i5.2d1a6d537e5b485482d6bcca34a56cc10d441a55.woff2?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=155f2c029a1738618a808b27a19c570f7b3c0558b949d4fece416f5eb383d206") format("woff2"),
+       url("//hyoufinejewelry.com/cdn/fonts/avenir_next/avenirnext_i5.fcfa37c68ca483c41031623bfae4701d99bb4b95.woff?h1=c2hhZGVzb2ZoeW91LmFjY291bnQubXlzaG9waWZ5LmNvbQ&h2=YmVoeW91LmNvbQ&h3=aHlvdWZpbmVqZXdlbHJ5LmNvbQ&hmac=e68eb90af1113af1476255aa416cf64c7d87ed655d65e4926c9d7de9045f4896") format("woff");
+}
+

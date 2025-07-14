@@ -1,0 +1,269 @@
+<!-- /sections/section-accordion-group.liquid -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
+{%- liquid
+  assign bg_color = section.settings.bg_color
+  assign text_color = section.settings.color
+  assign border_color = section.settings.border_color
+  assign columns = section.settings.columns
+  assign animation_anchor = '#custom_accordian_pdp' | append: section.id
+-%}
+
+{%- style -%}
+  #AccordionGroup--{{ section.id }} {
+    --PT: {{ section.settings.padding_top }}px;
+    --PB: {{ section.settings.padding_bottom }}px;
+
+    --accordion-columns: {{ columns }};
+
+    {%- unless bg_color == 'rgba(0,0,0,0)' or bg_color == blank -%}
+      --bg: {{ bg_color }};
+    {%- endunless -%}
+
+    {%- unless text_color == 'rgba(0,0,0,0)' or text_color == blank -%}
+      --text: {{ text_color }};
+    {%- endunless -%}
+
+    {%- unless border_color == 'rgba(0,0,0,0)' or border_color == blank -%}
+      --border: {{ border_color }};
+    {%- endunless -%}
+  }
+    .more_detail_acco .accordion-group__items .accordion .accordion__title{
+      font-family: AvenirRoman;
+    font-size: 15px;
+    padding: 5px 5px 5px 0px;
+  }
+  .more_detail_acco .accordion-group__items .accordion .accordion__body .accordion__content ul li{
+    font-family: AvenirRoman;
+  }
+  .accordion {
+	cursor: pointer;
+	padding: 10px;
+	transition: background-color 0.3s ease;
+}
+{%- endstyle -%}
+<div class="product__wrapper" data-zoom-caption {{ block.shopify_attributes }} id="custom_accordian_pdp"
+  data-aos-anchor="{{ animation_anchor }}"
+    data-aos="hero"
+    data-aos-order="1">
+ 
+    <div class="mob_accordian">
+     <div class="more_info">
+        <button class="show_hide_more_info" id="show-hidden-menu">PRODUCT INFORMATION
+         <svg width="16" height="16" viewBox="0 0 1024 1024" class="icon down-arrow" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#FFFFFF" />
+          </svg>
+        </button>
+      </div>
+        <div id="AccordionGroup--{{ section.id }}" class="accordion-group section-padding hidden-menu more_detail_acco" style="display:none;">
+      {%- if section.blocks.size > 0 -%}
+        <div class="faq {{ section.settings.width }}"
+          data-section-id="{{ section.id }}"
+          data-section-type="faq"
+        >
+          <collapsible-elements single="true">
+            <div class="accordion-group__items">
+              {%- for block in section.blocks -%}
+    
+                {%- assign current_block = block.settings -%}
+    
+                {%- if block.type == 'heading' and current_block.title != blank -%}
+                  <h3 class="accordion__heading h4" {{ block.shopify_attributes }}>{{ current_block.title }}</h3>
+                {%- endif -%}
+    
+                {%- if block.type == 'question' and current_block.title != blank -%}
+                  {%- if current_block.title != blank -%}
+                    <details class="accordion" data-collapsible {{ block.shopify_attributes }}>
+                      <summary class="accordion__title h6" data-collapsible-trigger>
+                        {{ current_block.title }}
+    
+                        {%- render 'icon-plus' -%}
+                        {%- render 'icon-minus' -%}
+                      </summary>
+    
+                      <div class="accordion__body rte" data-collapsible-body id="">
+                        {%- if current_block.content != blank -%}
+                        <div class="accordion__content" data-collapsible-content>
+                          {{ current_block.content }}
+                        </div>
+                        {% endif %}
+                        {%- if current_block.contentone != blank -%}
+                        <div class="accordion__content" data-collapsible-content>
+                          {{ current_block.contentone }}
+                        </div>
+                        {% endif %}
+                      </div>
+                    </details>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </collapsible-elements>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+.more_detail_acco {
+  display: none;
+  transition: max-height 0.3s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.more_detail_acco[style*="display: block"] {
+  max-height: 1000px; /* Adjust to accommodate your content */
+}
+
+.show_hide_more_info.active svg {
+  /* Add styles for the active button state, like a color change or icon rotation */
+  rotate: 2deg;
+}
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const showHideButton = document.getElementById('show-hidden-menu');
+  const moreDetailAcco = document.querySelector('.more_detail_acco');
+
+  showHideButton.addEventListener('click', function() {
+    // Toggle the class to show or hide the accordion
+    moreDetailAcco.classList.toggle('active');
+    
+    // Toggle the button class
+    showHideButton.classList.toggle('active');
+  });
+});
+</script>
+  
+{% schema %}
+  {
+    "name": "Accordion group pdp",
+    "settings": [
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "wrapper--narrow",
+        "options": [
+          { "value": "wrapper", "label": "Normal" },
+          { "value": "wrapper--narrow", "label": "Narrow" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "columns",
+        "label": "Columns",
+        "default": "1",
+        "options": [
+          { "value": "1", "label": "One" },
+          { "value": "2", "label": "Two" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "label": "Border"
+      },
+      {
+        "type": "header",
+        "content": "Section padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding top",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding bottom",
+        "default": 50
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Heading",
+        "type": "heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "FAQ"
+          }
+        ]
+      },
+      {
+        "name": "Question",
+        "type": "question",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "info": "Block will not be visible if left empty.",
+            "default": "Frequently asked question"
+          },
+          {
+            "type": "liquid",
+            "id": "content",
+            "label": "Answer"
+          },
+          {
+            "type": "richtext",
+            "id": "contentone",
+            "label": "Answer"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Accordion group pdp",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "heading"
+          },
+          {
+            "type": "question"
+          },
+          {
+            "type": "question"
+          },
+          {
+            "type": "question"
+          }
+        ]
+      }
+    ],
+    "disabled_on": {
+      "groups": ["header", "aside", "custom.pre_footer", "footer"]
+    }
+  }
+{% endschema %}

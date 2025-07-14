@@ -1,0 +1,105 @@
+
+<!-- <div class="know-more-about cust_wrapper--full-padded">
+  <a href="#know-more-about-pdp">KNOW MORE DETAILS</a>
+</div> -->
+{% if product.metafields.custom.shop_look_product %}
+<section class="cust_wrapper--full-padded shop-look-section"> 
+  <div class="product_shop_slider swiper swiper-container">
+    <h2>{{ section.settings.heading }}</h2>
+        <div class="swiper-wrapper slider_img_gap">  
+          {% comment %}{% assign array_of_image_objects = product.metafields.custom.shop_look_product | split: ',' %}
+          {% paginate collections.all.products by 500 %}
+          {% for product in collections.all.products %}
+           {% assign current_variant = product.variants %}
+            {% for variant in current_variant %}
+           {% assign product_sku = variant.sku %}          
+           {% for image_object_sku in array_of_image_objects %}
+              {% if product_sku == image_object_sku %}
+                {% assign first_image = product.images.first %}
+                  <div class="swiper-slide inner-image">
+                  <div class="grid__item small--one-half {{ grid_item_width }}">
+                    <div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card">
+                    <a href="{{ product.url }}">
+                      <img src="{{ first_image.src | img_url: '' }}" alt="{{ product.title }}"/>
+                       <p class="shop-title">{{ product.title }}</p>
+                       <p style="color:var(--text-light); text-align: left; font-weight: bold; font-size:14px;"> {{ variant.price | money_with_currency | remove : "USD" }} </p></a>
+                    </div> 
+                  </div>
+                </div>
+              {% endif %}
+           {% endfor %}
+              {% endfor %}
+          {% endfor %}
+          {% endpaginate %} {% endcomment %} 
+          {%- assign array_of_image_objects = product.metafields.custom.shop_look_product | split: ',' -%}
+      {%- paginate collections.all.products by 500 -%}
+      {%- for product in collections.all.products -%}
+        {%- assign current_variant = product.variants -%}
+        {%- for variant in current_variant -%}
+          {%- assign product_sku = variant.sku -%}
+          {%- for image_object_sku in array_of_image_objects -%}
+            {%- if product_sku == image_object_sku -%}
+              {%- assign first_image = product.images.first -%}
+              {%- if first_image -%}
+              <div class="swiper-slide inner-image">
+                <div class="grid__item small--one-half {{ grid_item_width }}">
+                  <div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card">
+                    <a href="{{ product.url }}">
+                      <img src="{{ first_image.src | img_url: '' }}" loading="lazy" alt="{{ product.title }}" loading="lazy" alt="{{ product.title }}" data-src="{{ first_image.src | img_url: '339x', scale: 2 }}"/>
+                      <p class="shop-title">{{ product.title }}</p>
+                      <p style="color: var(--text-light); text-align: left; font-weight: bold; font-size: 14px;">
+                        {{ variant.price | money_with_currency | remove: "USD" }}
+                      </p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {%- else -%}
+              <!-- Debug message for missing image -->
+              <p>Product {{ product.title }} has no images.</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {%- endpaginate -%}
+         </div>      
+          <div class="swiper-button-next">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">
+                <path d="M8.70885 7.29289C9.09937 7.68342 9.09937 8.31658 8.70885 8.70711L2.34489 15.0711C1.95436 15.4616 1.3212 15.4616 0.930675 15.0711C0.540151 14.6805 0.540151 14.0474 0.930675 13.6569L6.58753 8L0.930675 2.34315C0.540151 1.95262 0.540151 1.31946 0.930675 0.928932C1.3212 0.538408 1.95436 0.538408 2.34489 0.928932L8.70885 7.29289ZM6.31055 7L8.00174 7V9L6.31055 9V7Z" fill="black"/>
+              </svg>
+          </div>
+          <div class="swiper-button-prev">  
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="16" viewBox="0 0 9 16" fill="none">
+                  <path d="M0.29286 7.29289C-0.0976648 7.68342 -0.0976648 8.31658 0.29286 8.70711L6.65682 15.0711C7.04734 15.4616 7.68051 15.4616 8.07103 15.0711C8.46156 14.6805 8.46156 14.0474 8.07103 13.6569L2.41418 8L8.07103 2.34315C8.46156 1.95262 8.46156 1.31946 8.07103 0.928932C7.68051 0.538408 7.04734 0.538408 6.65682 0.928932L0.29286 7.29289ZM2.69116 7L0.999966 7V9L2.69116 9V7Z" fill="black"/>
+              </svg>
+          </div>
+    </div>  
+</section>
+{% endif %}
+                    
+{% schema %}
+  {
+    "name": "Shop The Custom Look",
+    "settings": [
+          {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      }
+    ],
+     
+    "presets": [
+      {
+        "name": "shop-the-look"
+
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

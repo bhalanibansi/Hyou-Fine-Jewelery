@@ -1,0 +1,75 @@
+# we use Shopify as our ecommerce platform
+{%- comment -%}
+# Caution! Please read https://help.shopify.com/en/manual/promoting-marketing/seo/editing-robots-txt before proceeding to make changes to this file.
+{% endcomment %}
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
+
+User-agent: OAI-SearchBot/1.0;
+Allow: /
+
+User-agent: *
+Disallow: /collections/twisted_ag
+Disallow: /collections/tier-pave_ag
+Disallow: /collections/textured_ag
+Disallow: /collections/tennis_ag
+Disallow: /collections/talisman_ag
+Disallow: /collections/station_ag
+Disallow: /collections/star_ag
+Disallow: /collections/stackable_ag
+Disallow: /collections/solitaire_ag
+Disallow: /collections/signet_ag
+Disallow: /collections/script_ag
+Disallow: /collections/scatter-diamonds_ag
+Disallow: /collections/pearl_ag
+Disallow: /collections/paperclip_ag
+Disallow: /collections/multipiercing-studs_ag
+Disallow: /collections/mini-solitaire_ag
+Disallow: /collections/metal-halo_ag
+Disallow: /collections/layered_ag
+Disallow: /collections/lariat_ag
+Disallow: /collections/interlinked_ag
+Disallow: /collections/infinity_ag
+Disallow: /collections/heart_ag
+Disallow: /collections/halo_ag
+Disallow: /collections/front-open_ag
+Disallow: /collections/floral_ag
+Disallow: /collections/fauna_ag
+Disallow: /collections/fancy_ag
+Disallow: /collections/diamond-composite_ag
+Disallow: /collections/diamond-classics_ag
+Disallow: /collections/crossover_ag
+Disallow: /collections/cross_ag
+Disallow: /collections/coil_ag
+Disallow: /collections/clover_ag
+Disallow: /collections/climbers_ag
+Disallow: /collections/chevron_ag
+Disallow: /collections/charm-hoops_ag
+Disallow: /collections/cera_ag
+Disallow: /collections/butterfly_ag
+Disallow: /collections/bar_ag
+Disallow: /collections/5-stone_ag
+Disallow: /collections/3-stone_ag
+Disallow: /collections/2-line-look_ag
+Disallow: /*?cb=
+Disallow: /*preview_theme_id=
+
+
+
+
+
+
+
+
+
+
+

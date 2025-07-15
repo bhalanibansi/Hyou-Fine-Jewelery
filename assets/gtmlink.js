@@ -1,3 +1,6 @@
+// second day changes in gtmlink file
+
+
 window.dataLayer = window.dataLayer || [];
 function trackEvent(eventName, element, extraData = {}) {
     let eventData = {
